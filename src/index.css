@@ -26,3 +26,45 @@ body {
 .hero-breathe {
   animation: hero-breathe 20s ease-in-out infinite;
 }
+
+/* Glacier gradient border that appears + flows on hover */
+@property --glacier-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glacier-spin {
+  to {
+    --glacier-angle: 360deg;
+  }
+}
+
+.glacier-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--glacier-angle),
+    #7dd3fc,
+    #e0f2fe,
+    #38bdf8,
+    #bae6fd,
+    #0ea5e9,
+    #7dd3fc
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.group:hover .glacier-border {
+  opacity: 1;
+  animation: glacier-spin 3s linear infinite;
+}

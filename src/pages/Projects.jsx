@@ -335,14 +335,11 @@ function ProjectSections({ detail }) {
 
 function TestimonialCard({ t, detail }) {
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl p-[2px]">
-      {/* glacier gradient border — rotates around the card on hover */}
+    <div className="group relative h-full rounded-2xl">
+      {/* glacier gradient border — flows around the card on hover */}
+      <span className="glacier-border" aria-hidden="true" />
       <div
-        className="pointer-events-none absolute -inset-1/2 bg-[conic-gradient(from_0deg,#7dd3fc,#e0f2fe,#bfdbfe,#a5f3fc,#38bdf8,#7dd3fc)] opacity-0 [transition:opacity_.4s_ease] group-hover:opacity-100 group-hover:animate-[spin_3.5s_linear_infinite]"
-        aria-hidden="true"
-      />
-      <div
-        className="relative flex h-full flex-col rounded-[calc(1rem-1px)] bg-white p-6 shadow-sm ring-1 ring-gray-200 [transition:box-shadow_.4s_ease] group-hover:shadow-lg group-hover:shadow-sky-100"
+        className="relative flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 [transition:box-shadow_.35s_ease] group-hover:shadow-lg group-hover:shadow-sky-100"
       >
       <div className="flex items-start justify-between gap-3">
         <div className={`flex gap-0.5 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
