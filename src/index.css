@@ -1,8 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Montserrat', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Montserrat', 'Noto Sans Devanagari', system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* In Nepali mode, lead with the Devanagari face so every character — including the
+   Latin bits and numerals inside Nepali text — renders in one consistent family. */
+html[lang='ne'] {
+  --font-sans: 'Noto Sans Devanagari', 'Montserrat', sans-serif;
+}
+html[lang='ne'] body,
+html[lang='ne'] input,
+html[lang='ne'] button,
+html[lang='ne'] textarea,
+html[lang='ne'] select {
+  font-family: 'Noto Sans Devanagari', 'Montserrat', sans-serif;
+}
+
+/* Devanagari reads a little light at 400 — nudge body text up to medium. */
+html[lang='ne'] body {
+  font-weight: 500;
 }
 
 :root {
@@ -41,18 +59,21 @@ body {
 }
 
 .glacier-border {
+  --bd-a: #7dd3fc;
+  --bd-b: #e0f2fe;
+  --bd-c: #38bdf8;
   position: absolute;
   inset: 0;
+  z-index: 20;
   border-radius: inherit;
-  padding: 2px;
+  padding: 0;
   background: conic-gradient(
     from var(--glacier-angle),
-    #7dd3fc,
-    #e0f2fe,
-    #38bdf8,
-    #bae6fd,
-    #0ea5e9,
-    #7dd3fc
+    var(--bd-a),
+    var(--bd-b),
+    var(--bd-c),
+    var(--bd-b),
+    var(--bd-a)
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -60,11 +81,22 @@ body {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transition:
+    opacity 0.45s ease,
+    padding 0.55s ease-out;
   pointer-events: none;
 }
 
-.group:hover .glacier-border {
+.group:hover .glacier-border,
+.group:focus-within .glacier-border {
   opacity: 1;
+  padding: 1px;
   animation: glacier-spin 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .glacier-border,
+  .group:focus-within .glacier-border {
+    animation: none;
+  }
 }

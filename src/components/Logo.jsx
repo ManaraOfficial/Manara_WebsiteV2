@@ -5,7 +5,7 @@ function Logo({ className = '' }) {
     <img
       src={logoWhite}
       alt="Manara Foundation"
-      className={`h-9 w-auto sm:h-20 drop-shadow-sm ${className}`}
+      className={`h-12 w-auto sm:h-28 drop-shadow-sm ${className}`}
     />
   )
 }

@@ -5,6 +5,7 @@ import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft, FaChevronLeft, FaChev
 import SubTabs from '../components/SubTabs.jsx'
 import Carousel from '../components/Carousel.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 import cm1 from '../assets/curious-minds/CuriousMinds.jpg'
 import cm2 from '../assets/curious-minds/CuriousMinds2.jpg'
@@ -35,19 +36,19 @@ const otherImages = Object.keys(otherImageModules)
 gsap.registerPlugin(ScrollTrigger)
 
 const tabs = [
-  { key: 'curious-minds', label: 'CURIOUS MINDS', color: 'bg-blue-600' },
-  { key: 'project-28', label: 'Project 28', color: 'bg-pink-600' },
-  { key: 'cecs', label: 'CECS', color: 'bg-purple-700' },
+  { key: 'curious-minds', label: 'CURIOUS MINDS', color: 'bg-[#1E5AA8]' },
+  { key: 'project-28', label: 'Project 28', color: 'bg-[#e20066]' },
+  { key: 'cecs', label: 'CECS', color: 'bg-[#7047A0]' },
 ]
 
 const details = {
   'curious-minds': {
-    bg: 'bg-blue-600',
+    bg: 'bg-[#1E5AA8]',
     short: 'CM',
-    ring: 'ring-blue-600',
-    text: 'text-blue-600',
-    badge: 'bg-blue-50 text-blue-700',
-    hoverRing: 'hover:ring-blue-500',
+    ring: 'ring-[#1E5AA8]',
+    text: 'text-[#1E5AA8]',
+    badge: 'bg-[#1E5AA8]/10 text-[#1E5AA8]',
+    borderColors: ['#1E5AA8', '#9dc0e8', '#14417a'],
     images: [cm1, cm2, cm3, cm4],
     tagline: 'Curiosity fuels education – education opens worlds',
     intro: `Curiosity is the driving force behind sustainable knowledge acquisition. This is precisely where the CURIOUS-MINDS educational initiative comes in: We open up inspiring learning environments for children in remote regions of Nepal and strengthen their future prospects through improved educational opportunities. Playful learning increases motivation and fosters long-term understanding. In many Nepalese schools, however, knowledge is primarily imparted through rote memorization – a practice that often fails to produce lasting learning outcomes. Within the framework of CURIOUS-MINDS, teachers gain practical experience in how knowledge can be conveyed effectively, both with and without modern media. With this project, we are committed not only to better education but also to children's rights. In collaboration with teachers, parents, children, and other stakeholders, we assess the challenges that impact their educational opportunities and develop targeted safeguarding measures.`,
@@ -85,12 +86,12 @@ const details = {
     ],
   },
   'project-28': {
-    bg: 'bg-pink-600',
+    bg: 'bg-[#e20066]',
     short: 'P28',
-    ring: 'ring-pink-600',
-    text: 'text-pink-600',
-    badge: 'bg-pink-50 text-pink-700',
-    hoverRing: 'hover:ring-pink-500',
+    ring: 'ring-[#e20066]',
+    text: 'text-[#e20066]',
+    badge: 'bg-[#e20066]/10 text-[#e20066]',
+    borderColors: ['#e20066', '#f7a8ce', '#a8004c'],
     images: [p28_1, p28_2, p28_3, p28_4, p28_5, p28_6, p28_7],
     tagline: 'Menstrual dignity and health for women in Nepal',
     intro: `In large parts of Nepal, basic knowledge about menstruation is lacking. Women and girls have limited access to appropriate hygiene products. Monthly bleeding leads to restrictions in daily life, as menstruation is associated with taboos and prejudices. Project 28 promotes menstrual dignity and health in Nepal and helps ensure that menstruating people can participate in life with dignity and without limitations throughout all 28 days of their cycle.`,
@@ -143,12 +144,12 @@ const details = {
     ],
   },
   cecs: {
-    bg: 'bg-purple-700',
+    bg: 'bg-[#7047A0]',
     short: 'CECS',
-    ring: 'ring-purple-700',
-    text: 'text-purple-700',
-    badge: 'bg-purple-50 text-purple-700',
-    hoverRing: 'hover:ring-purple-500',
+    ring: 'ring-[#7047A0]',
+    text: 'text-[#7047A0]',
+    badge: 'bg-[#7047A0]/10 text-[#7047A0]',
+    borderColors: ['#7047A0', '#c9b3e3', '#4f3175'],
     images: [cecs1, cecs2, cecs3, cecs4],
     tagline: "Fulfilling a child's wish for a future",
     intro: `Sponsorship can have a lasting positive impact on the lives of a child and the people around them. It's a very personal form of support that can foster a deep, felt connection between the sponsor and the country of Nepal, its people, the sponsored child, and their family. Therefore, taking on a sponsorship should be a well-considered, long-term decision. To help you decide whether or not to become a sponsor, we've compiled some important questions below. If you still have any questions, please don't hesitate to contact us. Just give us a call or send us an email!`,
@@ -207,10 +208,10 @@ const otherActivities = [
   'School Partnership in Hulchuk with German POS Service Group',
   'Healthy Schools sensibilization, awareness and sustainable structure building',
   'Organization of ECD specific teacher education and provisioning of ECD materials',
-  '…',
 ]
 
 function FlagshipPrograms() {
+  const { t } = useLang()
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -234,17 +235,13 @@ function FlagshipPrograms() {
   return (
     <div ref={sectionRef} className="bg-white px-6 py-8 sm:py-10 text-gray-700">
       <div className="mx-auto max-w-3xl space-y-3">
-        <h2 className="flagship-animate text-xl sm:text-2xl font-medium text-gray-800">Flagship Programs</h2>
+        <h2 className="flagship-animate text-xl sm:text-2xl font-medium text-gray-800">
+          {t('Flagship Programs')}
+        </h2>
         <p className="flagship-animate text-sm sm:text-base leading-relaxed">
-          Our flagship programs represent our main long-term investments in
-          education, health and community development. They address some
-          of the most important challenges facing children, youth, women
-          and communities in Nepal and are designed to create sustainable,
-          measurable and scalable impact over many years. Together, they
-          form the core of our work and receive continuous attention,
-          development and long-term support. While each program has its
-          own focus, they often contribute to education, health and
-          community development at the same time.
+          {t(
+            'Our flagship programs represent our main long-term investments in education, health and community development. They address some of the most important challenges facing children, youth, women and communities in Nepal and are designed to create sustainable, measurable and scalable impact over many years. Together, they form the core of our work and receive continuous attention, development and long-term support. While each program has its own focus, they often contribute to education, health and community development at the same time.'
+          )}
         </p>
       </div>
     </div>
@@ -253,15 +250,16 @@ function FlagshipPrograms() {
 
 function ProjectPhases({ detail }) {
   const ref = useScrollReveal('.reveal')
+  const { t } = useLang()
 
   return (
     <div ref={ref} className="bg-white px-6 py-10 sm:py-14 text-gray-700">
       <div className="mx-auto max-w-4xl">
         <div className="reveal text-center">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
-            {detail.phasesTitle}
+            {t(detail.phasesTitle)}
           </h2>
-          <p className="mt-1 text-sm sm:text-base text-gray-500">{detail.phasesSubtitle}</p>
+          <p className="mt-1 text-sm sm:text-base text-gray-500">{t(detail.phasesSubtitle)}</p>
         </div>
 
         <div className="mt-10 space-y-8">
@@ -274,10 +272,10 @@ function ProjectPhases({ detail }) {
               </div>
               <div className="pt-1">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                  {phase.title}
+                  {t(phase.title)}
                 </h3>
                 <p className="mt-2 text-sm sm:text-base leading-relaxed">
-                  {phase.description}
+                  {t(phase.description)}
                 </p>
               </div>
             </div>
@@ -290,6 +288,7 @@ function ProjectPhases({ detail }) {
 
 function ProjectSections({ detail }) {
   const ref = useScrollReveal('.reveal')
+  const { t } = useLang()
 
   return (
     <div ref={ref} className={`px-6 py-10 sm:py-14 text-white ${detail.bg}`}>
@@ -297,14 +296,14 @@ function ProjectSections({ detail }) {
         {detail.sections.map((section) => (
           <div key={section.title} className="reveal">
             <h2 className="text-xl sm:text-2xl font-semibold">
-              {section.title}
+              {t(section.title)}
             </h2>
 
             {section.type === 'text' && (
               <div className="mt-4 space-y-4">
                 {section.paragraphs.map((p, i) => (
                   <p key={i} className="text-sm sm:text-base leading-relaxed text-white/90">
-                    {p}
+                    {t(p)}
                   </p>
                 ))}
               </div>
@@ -315,11 +314,11 @@ function ProjectSections({ detail }) {
                 {section.groups.map((group) => (
                   <div key={group.heading}>
                     <h3 className="text-sm sm:text-base font-semibold">
-                      {group.heading}
+                      {t(group.heading)}
                     </h3>
                     <ul className="mt-3 list-disc space-y-2 pl-5 text-sm sm:text-base leading-relaxed text-white/90">
                       {group.items.map((item) => (
-                        <li key={item}>{item}</li>
+                        <li key={item}>{t(item)}</li>
                       ))}
                     </ul>
                   </div>
@@ -333,53 +332,66 @@ function ProjectSections({ detail }) {
   )
 }
 
-function TestimonialCard({ t, detail }) {
+function TestimonialCard({ t: item, detail }) {
+  const { t } = useLang()
   return (
-    <div className="group relative h-full rounded-2xl">
-      {/* glacier gradient border — flows around the card on hover */}
-      <span className="glacier-border" aria-hidden="true" />
+    <div className="group relative h-full rounded-2xl [transition:translate_1s_ease-out] [will-change:translate] hover:-translate-y-2">
+      {/* gradient border in the project's accent colour — flows around the card on hover */}
+      <span
+        className="glacier-border"
+        aria-hidden="true"
+        style={
+          detail.borderColors
+            ? {
+                '--bd-a': detail.borderColors[0],
+                '--bd-b': detail.borderColors[1],
+                '--bd-c': detail.borderColors[2],
+              }
+            : undefined
+        }
+      />
       <div
-        className="relative flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 [transition:box-shadow_.35s_ease] group-hover:shadow-lg group-hover:shadow-sky-100"
+        className="relative flex h-full flex-col rounded-2xl bg-white p-8 sm:p-9 shadow-sm ring-1 ring-gray-200 [transition:box-shadow_1s_ease] group-hover:shadow-lg group-hover:shadow-gray-200/70"
       >
       <div className="flex items-start justify-between gap-3">
-        <div className={`flex gap-0.5 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
+        <div className={`flex gap-1 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
           {Array.from({ length: 5 }).map((_, s) => (
-            <FaStar key={s} size={14} />
+            <FaStar key={s} size={17} />
           ))}
         </div>
-        {t.tag && (
+        {item.tag && (
           <span
-            className={`rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide ${detail.badge || 'bg-gray-100 text-gray-600'}`}
+            className={`rounded-full px-3 py-1 text-[11px] font-bold tracking-wide ${detail.badge || 'bg-gray-100 text-gray-600'}`}
           >
-            {t.tag}
+            {t(item.tag)}
           </span>
         )}
       </div>
 
       <FaQuoteLeft
-        className={`mt-4 opacity-30 transition-opacity duration-300 group-hover:opacity-60 ${detail.text || 'text-amber-500'}`}
-        size={16}
+        className={`mt-5 opacity-30 transition-opacity duration-300 group-hover:opacity-60 ${detail.text || 'text-amber-500'}`}
+        size={20}
         aria-hidden="true"
       />
-      <blockquote className="mt-2 flex-1 text-sm sm:text-base italic leading-relaxed text-gray-600">
-        {t.quote}
+      <blockquote className="mt-3 flex-1 text-base sm:text-lg italic leading-relaxed text-gray-600">
+        {t(item.quote)}
       </blockquote>
 
-      <hr className="my-5 border-gray-200" />
+      <hr className="my-6 border-gray-200" />
 
-      <footer className="flex items-center gap-3">
+      <footer className="flex items-center gap-4">
         <span className="relative shrink-0">
-          <FaUserCircle className={`${detail.text || 'text-gray-300'}`} size={40} aria-hidden="true" />
+          <FaUserCircle className={`${detail.text || 'text-gray-300'}`} size={48} aria-hidden="true" />
           <FaCheckCircle
             className={`absolute -bottom-0.5 -right-0.5 rounded-full bg-white ${detail.text || 'text-gray-400'}`}
-            size={14}
+            size={16}
             aria-hidden="true"
           />
         </span>
-        <div className="text-sm">
-          <div className="font-bold text-gray-800">{t.name}</div>
-          <div className={`font-semibold ${detail.text || 'text-gray-500'}`}>{t.role}</div>
-          {t.detail && <div className="text-xs text-gray-500">{t.detail}</div>}
+        <div>
+          <div className="text-base font-bold text-gray-800">{item.name}</div>
+          <div className={`text-sm font-semibold ${detail.text || 'text-gray-500'}`}>{t(item.role)}</div>
+          {item.detail && <div className="text-xs text-gray-500">{t(item.detail)}</div>}
         </div>
       </footer>
       </div>
@@ -394,7 +406,7 @@ function useItemsPerView() {
   useEffect(() => {
     const read = () => {
       const w = window.innerWidth
-      setN(w >= 1024 ? 3 : w >= 640 ? 2 : 1)
+      setN(w >= 768 ? 2 : 1)
     }
     read()
     window.addEventListener('resize', read)
@@ -405,6 +417,7 @@ function useItemsPerView() {
 
 function Testimonials({ detail }) {
   const ref = useScrollReveal('.reveal')
+  const { t } = useLang()
   const items = detail.testimonials
   const perView = useItemsPerView()
   const pages = Math.max(1, items.length - perView + 1)
@@ -426,13 +439,13 @@ function Testimonials({ detail }) {
 
   return (
     <div ref={ref} className="bg-gray-50 px-6 py-10 sm:py-14 text-gray-700">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <h2 className="reveal text-center text-xl sm:text-2xl font-semibold text-gray-800">
-          What People Say
+          {t('What People Say')}
         </h2>
 
         <div
-          className="reveal mt-8 overflow-hidden"
+          className="reveal mt-6 -my-4 overflow-hidden py-12"
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
@@ -461,7 +474,7 @@ function Testimonials({ detail }) {
               aria-label={playing ? 'Pause autoplay' : 'Resume autoplay'}
             >
               {playing ? <FaPause size={10} /> : <FaPlay size={10} />}
-              {playing ? 'Pause Autoplay' : 'Resume Autoplay'}
+              {playing ? t('Pause Autoplay') : t('Resume Autoplay')}
             </button>
 
             <div className="flex items-center gap-3">
@@ -505,27 +518,23 @@ function Testimonials({ detail }) {
 
 function OtherActivities({ withList }) {
   const ref = useScrollReveal('.reveal')
+  const { t } = useLang()
 
   return (
     <div ref={ref} className="bg-white px-6 py-8 sm:py-10 text-gray-700">
       <div className="mx-auto max-w-3xl space-y-3">
         <h2 className="reveal text-xl sm:text-2xl font-medium text-gray-800">
-          Other Activities
+          {t('Other Activities')}
         </h2>
         <p className="reveal text-sm sm:text-base leading-relaxed">
-          Not every important challenge requires a large program. Alongside
-          our flagship programs, we support a variety of other
-          initiatives, trainings, emergency responses and community-driven
-          activities. These activities allow us to respond to local needs,
-          pilot new ideas, strengthen partnerships and address practical
-          challenges identified by schools, communities and local
-          stakeholders. All of today's flagship programs originally
-          started as small activities responding to a specific local need.
+          {t(
+            "Not every important challenge requires a large program. Alongside our flagship programs, we support a variety of other initiatives, trainings, emergency responses and community-driven activities. These activities allow us to respond to local needs, pilot new ideas, strengthen partnerships and address practical challenges identified by schools, communities and local stakeholders. All of today's flagship programs originally started as small activities responding to a specific local need."
+          )}
         </p>
         {withList && (
           <ul className="reveal list-disc space-y-1 pl-5 text-sm sm:text-base">
             {otherActivities.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{t(item)}</li>
             ))}
           </ul>
         )}
@@ -535,6 +544,7 @@ function OtherActivities({ withList }) {
 }
 
 function Projects() {
+  const { t } = useLang()
   const [active, setActive] = useState(null)
   const detailRef = useRef(null)
   const picRowRef = useRef(null)
@@ -581,9 +591,9 @@ function Projects() {
           >
             {details[active].tagline ? (
               <div className="mx-auto max-w-3xl space-y-4">
-                <p className="text-lg sm:text-xl font-semibold">{details[active].tagline}</p>
+                <p className="text-lg sm:text-xl font-semibold">{t(details[active].tagline)}</p>
                 <p className="text-sm sm:text-base leading-relaxed text-white/90">
-                  {details[active].intro}
+                  {t(details[active].intro)}
                 </p>
               </div>
             ) : (
@@ -612,7 +622,7 @@ function Projects() {
         <>
           <OtherActivities withList />
           <div ref={picRowRef}>
-            <Carousel images={otherImages} alt="Other activities" ringClass="ring-gray-800" />
+            <Carousel images={otherImages} alt={t('Other activities')} ringClass="ring-gray-800" />
           </div>
         </>
       )}

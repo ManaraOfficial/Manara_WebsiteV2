@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import SubTabs from '../components/SubTabs.jsx'
 import Tagline from '../components/Tagline.jsx'
 import Story from '../components/Story.jsx'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 const tabs = [
   { key: 'education', label: 'EDUCATION', color: 'bg-[#366A35]' },
@@ -29,6 +30,7 @@ const panels = {
 }
 
 function Manara() {
+  const { t } = useLang()
   const [active, setActive] = useState('education')
   const panel = panels[active]
   const panelRef = useRef(null)
@@ -47,8 +49,8 @@ function Manara() {
       <SubTabs tabs={tabs} active={active} onChange={setActive} />
       <div className={`px-6 pt-8 pb-16 sm:pt-10 sm:pb-20 text-white ${panel.bg}`}>
         <div ref={panelRef} className="mx-auto max-w-3xl space-y-4 text-sm sm:text-base leading-relaxed">
-          <p>{panel.text}</p>
-          <p className="font-semibold">{panel.quote}</p>
+          <p>{t(panel.text)}</p>
+          <p className="font-semibold">{t(panel.quote)}</p>
         </div>
       </div>
       <Story />

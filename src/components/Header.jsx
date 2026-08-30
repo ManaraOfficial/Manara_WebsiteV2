@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo.jsx'
+import { useLang } from '../i18n/LanguageContext.jsx'
 import heroImage from '../assets/hero.jpg'
 import heroImage3 from '../assets/hero.jpeg'
 import heroImage4 from '../assets/hero1.jpeg'
@@ -17,6 +18,7 @@ export const navItems = [
 ]
 
 function Header() {
+  const { t } = useLang()
   const [activeIndex, setActiveIndex] = useState(0)
   // Only mount <img> tags for slides that have actually started loading, so slow
   // connections aren't forced to fetch all hero images at once — each one loads
@@ -71,7 +73,7 @@ function Header() {
           <img
             key={img}
             src={img}
-            alt="Children of the Manaslu region"
+            alt={t('Children of the Manaslu region')}
             fetchPriority={i === 0 ? 'high' : 'low'}
             loading={i === 0 ? 'eager' : 'lazy'}
             className={`hero-breathe absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-[3000ms] ease-in-out ${
@@ -88,6 +90,7 @@ function Header() {
 }
 
 export function Nav() {
+  const { lang, toggle, t } = useLang()
   const [hasInteracted, setHasInteracted] = useState(false)
 
   return (
@@ -99,16 +102,24 @@ export function Nav() {
           end={item.end}
           onClick={() => setHasInteracted(true)}
           className={({ isActive }) =>
-            `flex-1 whitespace-nowrap px-1 py-2 sm:px-3 sm:py-3 text-center font-semibold tracking-wide border-r border-gray-300 last:border-r-0 transition-all duration-200 ease-out active:scale-95 ${
+            `flex-1 whitespace-nowrap px-1 py-2 sm:px-3 sm:py-3 text-center tracking-wide border-r border-gray-300 last:border-r-0 transition-all duration-200 ease-out active:scale-95 ${
               isActive && hasInteracted
-                ? 'bg-gray-800 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                ? 'bg-[#404040] text-white font-extrabold'
+                : 'bg-white text-gray-700 font-medium hover:bg-gray-100'
             }`
           }
         >
-          {item.label.toUpperCase()}
+          {t(item.label).toUpperCase()}
         </NavLink>
       ))}
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={lang === 'en' ? 'नेपालीमा बदल्नुहोस्' : 'Switch to English'}
+        className="shrink-0 whitespace-nowrap px-3 py-2 sm:px-4 sm:py-3 font-bold tracking-wide text-gray-700 transition-colors duration-200 hover:bg-gray-100 active:scale-95"
+      >
+        {lang === 'en' ? 'नेपाली' : 'ENGLISH'}
+      </button>
     </nav>
   )
 }
