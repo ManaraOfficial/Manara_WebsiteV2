@@ -65,7 +65,7 @@ function Header() {
   }, [mountedIndices])
 
   return (
-    <header className="relative h-40 sm:h-[calc(100vh-49px)] w-full overflow-hidden">
+    <header className="relative h-[42vh] sm:h-[calc(100vh-49px)] w-full overflow-hidden">
       {heroImages.map((img, i) =>
         mountedIndices.has(i) ? (
           <img
