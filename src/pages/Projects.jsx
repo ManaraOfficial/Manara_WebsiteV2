@@ -335,9 +335,15 @@ function ProjectSections({ detail }) {
 
 function TestimonialCard({ t, detail }) {
   return (
-    <div
-      className={`group flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:ring-2 ${detail.hoverRing || 'hover:ring-amber-400'}`}
-    >
+    <div className="group relative h-full [transition:transform_.6s_cubic-bezier(.22,1,.36,1)] hover:-translate-y-2">
+      {/* glacier gradient border — fades in on hover */}
+      <div
+        className="pointer-events-none absolute -inset-px rounded-[1.05rem] bg-[linear-gradient(135deg,#a5f3fc_0%,#ffffff_35%,#bfdbfe_65%,#7dd3fc_100%)] opacity-0 blur-[1px] [transition:opacity_.6s_ease] group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <div
+        className="relative flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 [transition:box-shadow_.6s_ease] group-hover:shadow-2xl group-hover:shadow-sky-200/50"
+      >
       <div className="flex items-start justify-between gap-3">
         <div className={`flex gap-0.5 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
           {Array.from({ length: 5 }).map((_, s) => (
@@ -379,6 +385,7 @@ function TestimonialCard({ t, detail }) {
           {t.detail && <div className="text-xs text-gray-500">{t.detail}</div>}
         </div>
       </footer>
+      </div>
     </div>
   )
 }
