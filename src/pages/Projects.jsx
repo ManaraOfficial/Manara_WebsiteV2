@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { FaUserCircle, FaQuoteRight } from 'react-icons/fa'
+import { FaUserCircle, FaStar, FaCheckCircle } from 'react-icons/fa'
 import SubTabs from '../components/SubTabs.jsx'
 import Carousel from '../components/Carousel.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
@@ -46,6 +46,7 @@ const details = {
     short: 'CM',
     ring: 'ring-blue-600',
     text: 'text-blue-600',
+    badge: 'bg-blue-50 text-blue-700',
     images: [cm1, cm2, cm3, cm4],
     tagline: 'Curiosity fuels education – education opens worlds',
     intro: `Curiosity is the driving force behind sustainable knowledge acquisition. This is precisely where the CURIOUS-MINDS educational initiative comes in: We open up inspiring learning environments for children in remote regions of Nepal and strengthen their future prospects through improved educational opportunities. Playful learning increases motivation and fosters long-term understanding. In many Nepalese schools, however, knowledge is primarily imparted through rote memorization – a practice that often fails to produce lasting learning outcomes. Within the framework of CURIOUS-MINDS, teachers gain practical experience in how knowledge can be conveyed effectively, both with and without modern media. With this project, we are committed not only to better education but also to children's rights. In collaboration with teachers, parents, children, and other stakeholders, we assess the challenges that impact their educational opportunities and develop targeted safeguarding measures.`,
@@ -67,14 +68,18 @@ const details = {
     ],
     testimonials: [
       {
+        tag: 'DIGITAL LEARNING',
         quote: 'Since our school joined CURIOUS-MINDS, our students learn with computers for the first time — they are so much more engaged than before.',
         name: 'Placeholder Name',
-        role: 'Teacher, Partner School',
+        role: 'Teacher',
+        detail: 'Partner School, Manaslu Region',
       },
       {
+        tag: 'MODERN TEACHING',
         quote: 'The training gave me the confidence to use modern media in my classroom, not just rote memorization.',
         name: 'Placeholder Name',
-        role: 'Teacher, Partner School',
+        role: 'Teacher',
+        detail: 'Partner School, Manaslu Region',
       },
     ],
   },
@@ -83,6 +88,7 @@ const details = {
     short: 'P28',
     ring: 'ring-pink-600',
     text: 'text-pink-600',
+    badge: 'bg-pink-50 text-pink-700',
     images: [p28_1, p28_2, p28_3, p28_4, p28_5, p28_6, p28_7],
     tagline: 'Menstrual dignity and health for women in Nepal',
     intro: `In large parts of Nepal, basic knowledge about menstruation is lacking. Women and girls have limited access to appropriate hygiene products. Monthly bleeding leads to restrictions in daily life, as menstruation is associated with taboos and prejudices. Project 28 promotes menstrual dignity and health in Nepal and helps ensure that menstruating people can participate in life with dignity and without limitations throughout all 28 days of their cycle.`,
@@ -119,14 +125,18 @@ const details = {
     ],
     testimonials: [
       {
+        tag: 'MENSTRUAL DIGNITY',
         quote: 'For the first time, we could talk openly about menstruation at school without feeling ashamed.',
         name: 'Placeholder Name',
-        role: 'Student, Project 28 Participant',
+        role: 'Student',
+        detail: 'Project 28 Participant',
       },
       {
+        tag: 'GIRLS IN SCHOOL',
         quote: 'Project 28 gave our girls dignity and confidence — they no longer miss school during their period.',
         name: 'Placeholder Name',
-        role: 'Teacher, Partner School',
+        role: 'Teacher',
+        detail: 'Partner School',
       },
     ],
   },
@@ -135,6 +145,7 @@ const details = {
     short: 'CECS',
     ring: 'ring-purple-700',
     text: 'text-purple-700',
+    badge: 'bg-purple-50 text-purple-700',
     images: [cecs1, cecs2, cecs3, cecs4],
     tagline: "Fulfilling a child's wish for a future",
     intro: `Sponsorship can have a lasting positive impact on the lives of a child and the people around them. It's a very personal form of support that can foster a deep, felt connection between the sponsor and the country of Nepal, its people, the sponsored child, and their family. Therefore, taking on a sponsorship should be a well-considered, long-term decision. To help you decide whether or not to become a sponsor, we've compiled some important questions below. If you still have any questions, please don't hesitate to contact us. Just give us a call or send us an email!`,
@@ -172,14 +183,18 @@ const details = {
     ],
     testimonials: [
       {
+        tag: 'ACCESS TO EDUCATION',
         quote: 'Thanks to my sponsor, I can go to school every day instead of working to support my family.',
         name: 'Placeholder Name',
         role: 'Sponsored Child',
+        detail: 'Manaslu Region',
       },
       {
+        tag: 'ENDING EARLY MARRIAGE',
         quote: 'Sponsorship changed our village — more children are staying in school instead of being married early.',
         name: 'Placeholder Name',
         role: 'Community Member',
+        detail: 'Manaslu Region',
       },
     ],
   },
@@ -324,25 +339,46 @@ function Testimonials({ detail }) {
         <h2 className="reveal text-center text-xl sm:text-2xl font-semibold text-gray-800">
           What People Say
         </h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {detail.testimonials.map((t, i) => (
             <div
               key={i}
-              className="reveal relative flex flex-col rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
+              className="reveal flex flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
             >
-              <FaQuoteRight
-                className={`absolute right-6 top-6 ${detail.text || 'text-gray-300'}`}
-                size={20}
-                aria-hidden="true"
-              />
-              <blockquote className="pr-8 text-sm sm:text-base leading-relaxed text-gray-600">
-                &ldquo;{t.quote}&rdquo;
+              <div className="flex items-start justify-between gap-3">
+                <div className={`flex gap-0.5 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <FaStar key={s} size={14} />
+                  ))}
+                </div>
+                {t.tag && (
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide ${detail.badge || 'bg-gray-100 text-gray-600'}`}
+                  >
+                    {t.tag}
+                  </span>
+                )}
+              </div>
+
+              <blockquote className="mt-4 flex-1 text-sm sm:text-base italic leading-relaxed text-gray-600">
+                {t.quote}
               </blockquote>
-              <footer className="mt-5 flex items-center gap-3">
-                <FaUserCircle className="shrink-0 text-gray-300" size={40} aria-hidden="true" />
+
+              <hr className="my-5 border-gray-200" />
+
+              <footer className="flex items-center gap-3">
+                <span className="relative shrink-0">
+                  <FaUserCircle className={`${detail.text || 'text-gray-300'}`} size={40} aria-hidden="true" />
+                  <FaCheckCircle
+                    className={`absolute -bottom-0.5 -right-0.5 rounded-full bg-white ${detail.text || 'text-gray-400'}`}
+                    size={14}
+                    aria-hidden="true"
+                  />
+                </span>
                 <div className="text-sm">
-                  <div className="font-semibold text-gray-800">{t.name}</div>
-                  <div className="text-gray-500">{t.role}</div>
+                  <div className="font-bold text-gray-800">{t.name}</div>
+                  <div className={`font-semibold ${detail.text || 'text-gray-500'}`}>{t.role}</div>
+                  {t.detail && <div className="text-xs text-gray-500">{t.detail}</div>}
                 </div>
               </footer>
             </div>
