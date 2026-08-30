@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft } from 'react-icons/fa'
+import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft, FaChevronLeft, FaChevronRight, FaPause, FaPlay } from 'react-icons/fa'
 import SubTabs from '../components/SubTabs.jsx'
 import Carousel from '../components/Carousel.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
@@ -333,65 +333,167 @@ function ProjectSections({ detail }) {
   )
 }
 
-function Testimonials({ detail }) {
-  const ref = useScrollReveal('.reveal')
-
+function TestimonialCard({ t, detail }) {
   return (
-    <div ref={ref} className="bg-gray-950 px-6 py-12 sm:py-16 text-gray-300">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="reveal text-center text-xl sm:text-2xl font-semibold text-white">
-          What People Say
-        </h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {detail.testimonials.map((t, i) => (
-            <div
-              key={i}
-              className={`reveal group flex flex-col rounded-2xl bg-gray-900/70 p-6 ring-1 ring-white/10 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:bg-gray-900 hover:shadow-2xl hover:shadow-black/40 hover:ring-2 ${detail.hoverRing || 'hover:ring-amber-400'}`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className={`flex gap-0.5 ${detail.text || 'text-amber-400'}`} aria-hidden="true">
-                  {Array.from({ length: 5 }).map((_, s) => (
-                    <FaStar key={s} size={14} />
-                  ))}
-                </div>
-                {t.tag && (
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide ${detail.badge || 'bg-white/10 text-gray-200'}`}
-                  >
-                    {t.tag}
-                  </span>
-                )}
-              </div>
-
-              <FaQuoteLeft
-                className={`mt-4 opacity-40 transition-opacity duration-300 group-hover:opacity-70 ${detail.text || 'text-amber-400'}`}
-                size={16}
-                aria-hidden="true"
-              />
-              <blockquote className="mt-2 flex-1 text-sm sm:text-base italic leading-relaxed text-gray-300">
-                {t.quote}
-              </blockquote>
-
-              <hr className="my-5 border-white/10" />
-
-              <footer className="flex items-center gap-3">
-                <span className="relative shrink-0">
-                  <FaUserCircle className={`${detail.text || 'text-gray-500'}`} size={40} aria-hidden="true" />
-                  <FaCheckCircle
-                    className={`absolute -bottom-0.5 -right-0.5 rounded-full bg-gray-900 ${detail.text || 'text-gray-400'}`}
-                    size={14}
-                    aria-hidden="true"
-                  />
-                </span>
-                <div className="text-sm">
-                  <div className="font-bold text-white">{t.name}</div>
-                  <div className={`font-semibold ${detail.text || 'text-gray-400'}`}>{t.role}</div>
-                  {t.detail && <div className="text-xs text-gray-500">{t.detail}</div>}
-                </div>
-              </footer>
-            </div>
+    <div
+      className={`group flex h-full flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:ring-2 ${detail.hoverRing || 'hover:ring-amber-400'}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className={`flex gap-0.5 ${detail.text || 'text-amber-500'}`} aria-hidden="true">
+          {Array.from({ length: 5 }).map((_, s) => (
+            <FaStar key={s} size={14} />
           ))}
         </div>
+        {t.tag && (
+          <span
+            className={`rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide ${detail.badge || 'bg-gray-100 text-gray-600'}`}
+          >
+            {t.tag}
+          </span>
+        )}
+      </div>
+
+      <FaQuoteLeft
+        className={`mt-4 opacity-30 transition-opacity duration-300 group-hover:opacity-60 ${detail.text || 'text-amber-500'}`}
+        size={16}
+        aria-hidden="true"
+      />
+      <blockquote className="mt-2 flex-1 text-sm sm:text-base italic leading-relaxed text-gray-600">
+        {t.quote}
+      </blockquote>
+
+      <hr className="my-5 border-gray-200" />
+
+      <footer className="flex items-center gap-3">
+        <span className="relative shrink-0">
+          <FaUserCircle className={`${detail.text || 'text-gray-300'}`} size={40} aria-hidden="true" />
+          <FaCheckCircle
+            className={`absolute -bottom-0.5 -right-0.5 rounded-full bg-white ${detail.text || 'text-gray-400'}`}
+            size={14}
+            aria-hidden="true"
+          />
+        </span>
+        <div className="text-sm">
+          <div className="font-bold text-gray-800">{t.name}</div>
+          <div className={`font-semibold ${detail.text || 'text-gray-500'}`}>{t.role}</div>
+          {t.detail && <div className="text-xs text-gray-500">{t.detail}</div>}
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+const AUTOPLAY_MS = 5000
+
+function useItemsPerView() {
+  const [n, setN] = useState(1)
+  useEffect(() => {
+    const read = () => {
+      const w = window.innerWidth
+      setN(w >= 1024 ? 3 : w >= 640 ? 2 : 1)
+    }
+    read()
+    window.addEventListener('resize', read)
+    return () => window.removeEventListener('resize', read)
+  }, [])
+  return n
+}
+
+function Testimonials({ detail }) {
+  const ref = useScrollReveal('.reveal')
+  const items = detail.testimonials
+  const perView = useItemsPerView()
+  const pages = Math.max(1, items.length - perView + 1)
+  const [rawPage, setRawPage] = useState(0)
+  const [playing, setPlaying] = useState(true)
+  const [hovering, setHovering] = useState(false)
+
+  const page = Math.min(rawPage, pages - 1)
+  const setPage = setRawPage
+
+  useEffect(() => {
+    if (!playing || hovering || pages <= 1) return
+    const id = setInterval(() => setRawPage((p) => (p + 1) % pages), AUTOPLAY_MS)
+    return () => clearInterval(id)
+  }, [playing, hovering, pages])
+
+  const goPrev = () => setPage((p) => (p - 1 + pages) % pages)
+  const goNext = () => setPage((p) => (p + 1) % pages)
+
+  return (
+    <div ref={ref} className="bg-gray-50 px-6 py-10 sm:py-14 text-gray-700">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="reveal text-center text-xl sm:text-2xl font-semibold text-gray-800">
+          What People Say
+        </h2>
+
+        <div
+          className="reveal mt-8 overflow-hidden"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${page * (100 / perView)}%)` }}
+          >
+            {items.map((t, i) => (
+              <div
+                key={i}
+                className="shrink-0 px-3 first:pl-0 last:pr-0"
+                style={{ width: `${100 / perView}%` }}
+              >
+                <TestimonialCard t={t} detail={detail} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {pages > 1 && (
+          <div className="reveal mt-6 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setPlaying((v) => !v)}
+              className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+              aria-label={playing ? 'Pause autoplay' : 'Resume autoplay'}
+            >
+              {playing ? <FaPause size={10} /> : <FaPlay size={10} />}
+              {playing ? 'Pause Autoplay' : 'Resume Autoplay'}
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: pages }).map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setPage(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    aria-current={i === page ? 'true' : undefined}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === page ? `w-6 ${detail.bg || 'bg-amber-500'}` : 'w-2 bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={goPrev}
+                aria-label="Previous testimonial"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-colors hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+              >
+                <FaChevronLeft size={13} />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                aria-label="Next testimonial"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-colors hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+              >
+                <FaChevronRight size={13} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
