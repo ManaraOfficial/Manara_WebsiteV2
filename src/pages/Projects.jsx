@@ -5,7 +5,7 @@ import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft, FaChevronLeft, FaChev
 import SubTabs from '../components/SubTabs.jsx'
 import Carousel from '../components/Carousel.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
-import { useLang } from '../i18n/LanguageContext.jsx'
+import { useLang } from '../i18n/useLang.js'
 
 import cm1 from '../assets/curious-minds/CuriousMinds.jpg'
 import cm2 from '../assets/curious-minds/CuriousMinds2.jpg'
@@ -25,13 +25,30 @@ import cecs2 from '../assets/CECS/3efe7347a34307866fcf414e3795dfd0e3da04a2-1920x
 import cecs3 from '../assets/CECS/c8cf21abe68c8b964bd40655950400fdfd2dba82-1280x720.jpg'
 import cecs4 from '../assets/CECS/908e3fe7491656cef7380b51c631a8ab12563cd6-1620x1080.jpg'
 
-const otherImageModules = import.meta.glob('../assets/others/IMG_*.JPG', {
-  eager: true,
+// Not eager: the ~40 "other activities" photos are only fetched when that
+// gallery actually renders (Projects with no tab selected), not on every visit.
+const otherImageLoaders = import.meta.glob('../assets/others/IMG_*.JPG', {
   import: 'default',
 })
-const otherImages = Object.keys(otherImageModules)
-  .sort()
-  .map((key) => otherImageModules[key])
+
+function useOtherImages(enabled) {
+  const [images, setImages] = useState([])
+  useEffect(() => {
+    if (!enabled) return
+    let cancelled = false
+    Promise.all(
+      Object.keys(otherImageLoaders)
+        .sort()
+        .map((key) => otherImageLoaders[key]())
+    ).then((urls) => {
+      if (!cancelled) setImages(urls)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [enabled])
+  return images
+}
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -548,15 +565,20 @@ function Projects() {
   const [active, setActive] = useState(null)
   const detailRef = useRef(null)
   const picRowRef = useRef(null)
+  const otherImages = useOtherImages(!active)
 
   useLayoutEffect(() => {
-    if (detailRef.current) {
+    if (!detailRef.current || !active) return
+    // Background colour eases between projects via CSS (transition-colors); the
+    // text glides in from the right so switching tabs feels directional.
+    const ctx = gsap.context(() => {
       gsap.fromTo(
-        detailRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+        detailRef.current.querySelector('.detail-body'),
+        { x: 44, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
       )
-    }
+    }, detailRef)
+    return () => ctx.revert()
   }, [active])
 
   useEffect(() => {
@@ -587,10 +609,10 @@ function Projects() {
         <>
           <div
             ref={detailRef}
-            className={`px-6 py-8 sm:py-10 text-center text-white ${details[active].bg}`}
+            className={`overflow-x-hidden px-6 py-8 sm:py-10 text-center text-white transition-colors duration-500 ease-out ${details[active].bg}`}
           >
             {details[active].tagline ? (
-              <div className="mx-auto max-w-3xl space-y-4">
+              <div className="detail-body mx-auto max-w-3xl space-y-4">
                 <p className="text-lg sm:text-xl font-semibold">{t(details[active].tagline)}</p>
                 <p className="text-sm sm:text-base leading-relaxed text-white/90">
                   {t(details[active].intro)}

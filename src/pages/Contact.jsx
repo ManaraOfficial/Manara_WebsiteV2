@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import useScrollReveal from '../hooks/useScrollReveal.js'
-import { useLang } from '../i18n/LanguageContext.jsx'
+import { useLang } from '../i18n/useLang.js'
 
-const CONTACT_EMAIL = 'manaraofficial32@gmail.com'
+const CONTACT_EMAIL = 'info@manara.org.np'
 
 // Web3Forms access key — get a free one at https://web3forms.com (safe to expose
 // in client code). Until it is set, the form runs in demo mode.
@@ -27,8 +27,7 @@ const inquiryTopics = [
   'General Information Request',
   'Curious Minds',
   'Project 28',
-  'Sponsorships',
-  'Other Activities',
+  'Partnership',
 ]
 
 const REQUIRED_FIELDS = {
@@ -50,8 +49,47 @@ function Contact() {
 
   const demoMode = WEB3FORMS_KEY === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY'
 
-  const clearError = (name) =>
-    setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev))
+  const validateField = (name, rawValue) => {
+    const value = String(rawValue || '').trim()
+    if (REQUIRED_FIELDS[name] && !value) return t(REQUIRED_FIELDS[name])
+    if (!value) return ''
+
+    if (name === 'name') {
+      // Letters (any script, incl. Devanagari), spaces, . ' - only; at least two
+      // parts of 2+ letters each — i.e. a first and last name.
+      const parts = value.split(/\s+/).filter(Boolean)
+      const looksLikeName = parts.every((p) => /^[\p{L}\p{M}][\p{L}\p{M}.'-]*$/u.test(p))
+      const enoughParts =
+        parts.length >= 2 && parts.filter((p) => p.replace(/[.'-]/g, '').length >= 2).length >= 2
+      if (!looksLikeName || !enoughParts) {
+        return t('Please enter your full name (first and last).')
+      }
+    }
+
+    if (name === 'phone' && !/^(977)?9\d{9}$/.test(value.replace(/[\s\-()+]/g, ''))) {
+      return t('Enter a valid Nepali phone number (10 digits starting with 9).')
+    }
+
+    if (name === 'address') {
+      const validChars = /^[\p{L}\p{M}\p{N}\s,.\-/#()]+$/u
+      const alnum = value.replace(/[^\p{L}\p{N}]/gu, '').length
+      if (alnum < 3 || !/\p{L}/u.test(value) || !validChars.test(value)) {
+        return t('Please enter a valid address.')
+      }
+    }
+
+    if (name === 'message' && (value.length < 10 || !/\p{L}/u.test(value))) {
+      return t('Please write a little more (at least 10 characters).')
+    }
+
+    return ''
+  }
+
+  // Live validation: check the field on every keystroke and on blur.
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) || undefined }))
+  }
 
   const inputClass = (name) =>
     `${fieldBase} ${errors[name] ? 'border-red-400' : 'border-gray-300 focus:border-[#EC8134]'}`
@@ -61,12 +99,9 @@ function Contact() {
     const data = new FormData(e.target)
 
     const nextErrors = {}
-    for (const [name, message] of Object.entries(REQUIRED_FIELDS)) {
-      if (!String(data.get(name) || '').trim()) nextErrors[name] = t(message)
-    }
-    const phone = String(data.get('phone') || '').replace(/[\s\-()+]/g, '')
-    if (!nextErrors.phone && !/^(977)?9\d{9}$/.test(phone)) {
-      nextErrors.phone = t('Enter a valid Nepali phone number (10 digits starting with 9).')
+    for (const name of Object.keys(REQUIRED_FIELDS)) {
+      const err = validateField(name, data.get(name))
+      if (err) nextErrors[name] = err
     }
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
@@ -166,7 +201,8 @@ function Contact() {
                   name="name"
                   placeholder={t('Jane Doe')}
                   className={inputClass('name')}
-                  onInput={() => clearError('name')}
+                  onChange={handleFieldChange}
+                  onBlur={handleFieldChange}
                 />
                 {errors.name && <p className="mt-1.5 text-xs text-red-500">{errors.name}</p>}
               </div>
@@ -178,7 +214,8 @@ function Contact() {
                     name="phone"
                     placeholder={t('9841234567 or +977 9841234567')}
                     className={inputClass('phone')}
-                    onInput={() => clearError('phone')}
+                    onChange={handleFieldChange}
+                    onBlur={handleFieldChange}
                   />
                   {errors.phone && <p className="mt-1.5 text-xs text-red-500">{errors.phone}</p>}
                 </div>
@@ -188,7 +225,8 @@ function Contact() {
                     name="address"
                     placeholder={t('Street, City, District')}
                     className={inputClass('address')}
-                    onInput={() => clearError('address')}
+                    onChange={handleFieldChange}
+                    onBlur={handleFieldChange}
                   />
                   {errors.address && <p className="mt-1.5 text-xs text-red-500">{errors.address}</p>}
                 </div>
@@ -212,7 +250,8 @@ function Contact() {
                   rows={4}
                   placeholder={t('How can we help you today?')}
                   className={`${inputClass('message')} resize-none`}
-                  onInput={() => clearError('message')}
+                  onChange={handleFieldChange}
+                  onBlur={handleFieldChange}
                 />
                 {errors.message && <p className="mt-1.5 text-xs text-red-500">{errors.message}</p>}
               </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { FaChevronLeft, FaChevronRight, FaTimes, FaSearchPlus, FaSearchMinus, FaExpand } from 'react-icons/fa'
+import BlurImage from './BlurImage.jsx'
 
 const ZOOM_MIN = 1
 const ZOOM_MAX = 3
@@ -75,12 +76,13 @@ function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
           aria-label={`Expand image ${active + 1} of ${total}`}
           className="block aspect-[16/10] w-full cursor-zoom-in"
         >
-          <img
+          <BlurImage
+            key={images[active]}
             src={images[active]}
             alt={`${alt} ${active + 1}`}
             loading="eager"
-            decoding="async"
-            className="h-full w-full object-cover"
+            className="h-full w-full"
+            imgClassName="h-full w-full object-cover"
           />
         </button>
 

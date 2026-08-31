@@ -1,4 +1,4 @@
-import { useLang } from '../i18n/LanguageContext.jsx'
+import { useLang } from '../i18n/useLang.js'
 
 function SubTabs({ tabs, active, onChange }) {
   const { t } = useLang()

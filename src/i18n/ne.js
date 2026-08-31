@@ -11,7 +11,13 @@ const ne = {
 
   // ---- Layout / footer ----
   'Manara Foundation — The Way of People': 'मनारा फाउन्डेसन — मानिसहरूको बाटो',
+  'Manara Foundation': 'मनारा फाउन्डेसन',
   'Children of the Manaslu region': 'मनास्लु क्षेत्रका बालबालिका',
+  'Empowering people and communities in Nepal through education, health and partnership.':
+    'शिक्षा, स्वास्थ्य र साझेदारीमार्फत नेपालका व्यक्ति र समुदायलाई सशक्त बनाउँदै।',
+  'Quick Links': 'द्रुत लिङ्कहरू',
+  'All rights reserved.': 'सर्वाधिकार सुरक्षित।',
+  'Manaslu Region, Nepal': 'मनास्लु क्षेत्र, नेपाल',
 
   // ---- Tagline ----
   'We empower people and communities through education, health and partnership, enabling them to shape their own future with dignity, confidence and opportunity':
@@ -32,6 +38,7 @@ const ne = {
   EDUCATION: 'शिक्षा',
   HEALTH: 'स्वास्थ्य',
   PARTNERSHIP: 'साझेदारी',
+  Partnership: 'साझेदारी',
   'PROJECT-TEAM': 'परियोजना–टोली',
   ADMINISTRATION: 'प्रशासन',
   'BOARD-MEMBERS': 'कार्यसमिति',
@@ -108,6 +115,11 @@ const ne = {
   'Message is required.': 'सन्देश आवश्यक छ।',
   'Enter a valid Nepali phone number (10 digits starting with 9).':
     'मान्य नेपाली फोन नम्बर लेख्नुहोस् (९ बाट सुरु हुने १० अंक)।',
+  'Please enter your full name (first and last).':
+    'कृपया आफ्नो पूरा नाम लेख्नुहोस् (नाम र थर)।',
+  'Please enter a valid address.': 'कृपया मान्य ठेगाना लेख्नुहोस्।',
+  'Please write a little more (at least 10 characters).':
+    'कृपया अलिकति बढी लेख्नुहोस् (कम्तीमा १० अक्षर)।',
 
   // ---- Team ----
   'Our project team coordinates and delivers Manara Foundation\'s programs on the ground, working directly with schools and communities in the Manaslu region and beyond.':
@@ -126,8 +138,27 @@ const ne = {
   'Board Chair': 'कार्यसमिति अध्यक्ष',
   'Board Treasurer': 'कार्यसमिति कोषाध्यक्ष',
   'Board Member': 'कार्यसमिति सदस्य',
+  'Head of Curious Minds': 'क्युरियस माइन्ड्स प्रमुख',
+  'Head of CECS': 'सीईसीएस प्रमुख',
+  'Head of Project 28': 'परियोजना २८ प्रमुख',
   'Part of the Manara Foundation team, working with schools and communities in the Manaslu region and beyond.':
     'मनारा फाउन्डेसन टोलीको सदस्य, मनास्लु क्षेत्र र त्योभन्दा बाहिरका विद्यालय र समुदायसँग काम गर्दै।',
+  'Coordinates the CECS child-sponsorship programme, connecting sponsors with children in the Manaslu region and following their schooling and wellbeing.':
+    'मनास्लु क्षेत्रका बालबालिकालाई प्रायोजकसँग जोड्दै र उनीहरूको पढाइ तथा हितको अनुगमन गर्दै सीईसीएस बाल-प्रायोजन कार्यक्रम समन्वय गर्छन्।',
+  'Coordinates Project 28, bringing menstrual health education and hygiene support to girls and women across partner schools and communities.':
+    'साझेदार विद्यालय र समुदायमा किशोरी तथा महिलालाई महिनावारी स्वास्थ्य शिक्षा र सरसफाइ सहयोग पुर्‍याउँदै परियोजना २८ समन्वय गर्छिन्।',
+  'Coordinates Curious Minds, setting up digital classrooms and training teachers in remote schools of the Manaslu region.':
+    'मनास्लु क्षेत्रका दुर्गम विद्यालयमा डिजिटल कक्षाकोठा स्थापना गर्दै र शिक्षकलाई तालिम दिँदै क्युरियस माइन्ड्स समन्वय गर्छन्।',
+  'Works with schools and communities on Project 28, running menstrual health workshops and helping girls stay in school throughout their cycle.':
+    'परियोजना २८ अन्तर्गत विद्यालय र समुदायसँग मिलेर महिनावारी स्वास्थ्यसम्बन्धी कार्यशाला सञ्चालन गर्छिन् र किशोरीहरूलाई सम्पूर्ण चक्रभर विद्यालयमै टिकाउन सहयोग गर्छिन्।',
+  "Oversees the Foundation's day-to-day operations, accounting and reporting, keeping every programme running smoothly behind the scenes.":
+    'फाउन्डेसनको दैनिक सञ्चालन, लेखा र प्रतिवेदनको रेखदेख गर्दै हरेक कार्यक्रमलाई पर्दा पछाडिबाट सुचारु राख्छन्।',
+  "Chairs the board and leads Curious Minds, guiding the growth of digital learning and children's rights work across Nepal.":
+    'कार्यसमितिको अध्यक्षता गर्दै र क्युरियस माइन्ड्सको नेतृत्व गर्दै नेपालभर डिजिटल सिकाइ र बालअधिकार कार्यको विस्तारलाई मार्गदर्शन गर्छन्।',
+  'Board treasurer and lead of CECS, overseeing child sponsorships and the long-term financial stewardship of the Foundation.':
+    'कार्यसमिति कोषाध्यक्ष तथा सीईसीएसका प्रमुख, बाल-प्रायोजन र फाउन्डेसनको दीर्घकालीन वित्तीय व्यवस्थापनको रेखदेख गर्छन्।',
+  'Initiator and lead of Project 28, bringing organisational development expertise to advance menstrual dignity and health in Nepal.':
+    'परियोजना २८ की सुरुवातकर्ता तथा प्रमुख, नेपालमा महिनावारी सम्मान र स्वास्थ्य अघि बढाउन संगठनात्मक विकास विशेषज्ञता ल्याउँछिन्।',
 
   // ---- Projects: flagship ----
   'Flagship Programs': 'प्रमुख कार्यक्रमहरू',

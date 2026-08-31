@@ -1,5 +1,5 @@
 import useScrollReveal from '../hooks/useScrollReveal.js'
-import { useLang } from '../i18n/LanguageContext.jsx'
+import { useLang } from '../i18n/useLang.js'
 
 function Tagline() {
   const ref = useScrollReveal('.reveal', { duration: 1, y: 24 })

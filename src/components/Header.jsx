@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo.jsx'
-import { useLang } from '../i18n/LanguageContext.jsx'
-import heroImage from '../assets/hero.jpg'
-import heroImage3 from '../assets/hero.jpeg'
-import heroImage4 from '../assets/hero1.jpeg'
-import heroImage5 from '../assets/hero1.jfif'
+import { navItems } from './navItems.js'
+import { useLang } from '../i18n/useLang.js'
+// Full-bleed hero — needs a larger, less-compressed render than the global default.
+import heroImage from '../assets/hero.jpg?w=2200&quality=82&format=webp'
+import heroImage3 from '../assets/hero.jpeg?w=2200&quality=82&format=webp'
+import heroImage4 from '../assets/hero1.jpeg?w=2200&quality=82&format=webp'
+import heroImage5 from '../assets/hero1.jfif?w=2200&quality=82&format=webp'
 
 const heroImages = [heroImage, heroImage3, heroImage4, heroImage5]
-
-export const navItems = [
-  { to: '/', label: 'Manara', end: true },
-  { to: '/team', label: 'Team' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/reports', label: 'Reports' },
-  { to: '/contact', label: 'Contact' },
-]
 
 function Header() {
   const { t } = useLang()

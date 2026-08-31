@@ -45,6 +45,55 @@ body {
   animation: hero-breathe 20s ease-in-out infinite;
 }
 
+/* Skeleton placeholder shown while an image loads (see BlurImage). */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-14deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-14deg);
+  }
+}
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.skeleton-shimmer {
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(100deg, #e2e5ea 0%, #eef0f3 50%, #e2e5ea 100%);
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 65%;
+  transform: translateX(-150%) skewX(-14deg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 30%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.35) 70%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer,
+  .skeleton-shimmer::after {
+    animation: none;
+  }
+}
+
 /* Glacier gradient border that appears + flows on hover */
 @property --glacier-angle {
   syntax: '<angle>';

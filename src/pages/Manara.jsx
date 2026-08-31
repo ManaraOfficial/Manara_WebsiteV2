@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import SubTabs from '../components/SubTabs.jsx'
 import Tagline from '../components/Tagline.jsx'
 import Story from '../components/Story.jsx'
-import { useLang } from '../i18n/LanguageContext.jsx'
+import { useLang } from '../i18n/useLang.js'
 
 const tabs = [
   { key: 'education', label: 'EDUCATION', color: 'bg-[#366A35]' },
