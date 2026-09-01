@@ -25,16 +25,6 @@ html[lang='ne'] body {
 
 :root {
   color-scheme: light;
-  /* Height of the sticky nav. The sub-tabs stick directly beneath it and the
-     hero sizes itself against it, so all three read this one value — change the
-     nav's padding and update here only. */
-  --nav-h: 34px;
-}
-
-@media (min-width: 640px) {
-  :root {
-    --nav-h: 49px;
-  }
 }
 
 body {

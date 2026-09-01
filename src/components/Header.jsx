@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import LangSwitch from './LangSwitch.jsx'
@@ -62,7 +62,7 @@ function Header() {
   }, [mountedIndices])
 
   return (
-    <header className="relative h-[42vh] sm:h-[calc(100vh-var(--nav-h))] w-full overflow-hidden">
+    <header className="relative h-[42vh] sm:h-[calc(100vh-49px)] w-full overflow-hidden">
       {heroImages.map((img, i) =>
         mountedIndices.has(i) ? (
           <img
@@ -87,37 +87,9 @@ function Header() {
 export function Nav() {
   const { t } = useLang()
   const [hasInteracted, setHasInteracted] = useState(false)
-  const navRef = useRef(null)
-
-  // Publish the nav's real height as --nav-h, which the sub-tabs stick to and
-  // the hero sizes against. Measured rather than hard-coded because it changes
-  // with the breakpoint, once webfonts land, and between languages — Devanagari
-  // sits taller than Latin, so EN and NE are not the same height.
-  useLayoutEffect(() => {
-    const el = navRef.current
-    if (!el) return
-    // Round up: offsetHeight truncates, and a fractional shortfall lets a sliver
-    // of scrolling content bleed through between the nav and the sub-tabs.
-    const publish = () =>
-      document.documentElement.style.setProperty(
-        '--nav-h',
-        `${Math.ceil(el.getBoundingClientRect().height)}px`
-      )
-    publish()
-    const ro = new ResizeObserver(publish)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
 
   return (
-    <nav
-      ref={navRef}
-      // transform-gpu promotes the bar to its own compositing layer. Without it
-      // Chrome repaints the sticky nav as it flips between static and stuck and
-      // can leave it half-drawn while scrolling down — it only looks right again
-      // after scrolling back up.
-      className="sticky top-0 z-50 flex transform-gpu border-b border-gray-300 bg-white text-[11px] sm:text-base"
-    >
+    <nav className="sticky top-0 z-50 flex border-b border-gray-300 bg-white text-[11px] sm:text-base">
       {navItems.map((item) => (
         <NavLink
           key={item.to}

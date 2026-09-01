@@ -59,22 +59,7 @@ function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
     if (e.key === 'ArrowRight') next()
   }
 
-  // Hold the gallery's space while the images are still resolving. Returning
-  // null here made the page grow ~400px the moment they arrived; if that landed
-  // mid-scroll, the jump shifted the scroll position and left the sticky nav
-  // torn until you scrolled back up.
-  if (!images || images.length === 0) {
-    return (
-      <div className="mx-auto max-w-4xl px-6 py-6 sm:py-8" aria-hidden="true">
-        <div className="skeleton-shimmer relative aspect-[16/10] w-full rounded-2xl" />
-        <div className="mt-4 flex items-center justify-center gap-2">
-          {Array.from({ length: THUMBS_VISIBLE }).map((_, i) => (
-            <div key={i} className="skeleton-shimmer relative h-14 w-14 shrink-0 rounded-lg" />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  if (!images || images.length === 0) return null
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-6 sm:py-8">
