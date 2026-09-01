@@ -36,10 +36,13 @@ function Manara() {
   const panelRef = useRef(null)
 
   useLayoutEffect(() => {
+    // Match the Projects tab treatment: background colour eases between panels
+    // via CSS (transition-colors); the text glides in from the right so
+    // switching tabs feels directional.
     gsap.fromTo(
       panelRef.current,
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      { x: 44, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
     )
   }, [active])
 
@@ -47,7 +50,9 @@ function Manara() {
     <div>
       <Tagline />
       <SubTabs tabs={tabs} active={active} onChange={setActive} />
-      <div className={`px-6 pt-8 pb-16 sm:pt-10 sm:pb-20 text-white ${panel.bg}`}>
+      <div
+        className={`overflow-x-hidden px-6 py-10 sm:py-14 text-white transition-colors duration-500 ease-out ${panel.bg}`}
+      >
         <div ref={panelRef} className="mx-auto max-w-3xl space-y-4 text-sm sm:text-base leading-relaxed">
           <p>{t(panel.text)}</p>
           <p className="font-semibold">{t(panel.quote)}</p>

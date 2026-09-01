@@ -3,7 +3,7 @@ import { useLang } from '../i18n/useLang.js'
 function SubTabs({ tabs, active, onChange }) {
   const { t } = useLang()
   return (
-    <div className="sticky top-[34px] sm:top-[49px] z-40 flex">
+    <div className="sticky top-[var(--nav-h)] z-40 flex">
       {tabs.map((tab) => {
         const isActive = tab.key === active
         return (

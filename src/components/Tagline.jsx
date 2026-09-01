@@ -6,7 +6,7 @@ function Tagline() {
   const { t } = useLang()
 
   return (
-    <section ref={ref} className="px-6 py-10 sm:py-12">
+    <section ref={ref} className="px-6 py-10 sm:py-14">
       <p className="reveal mx-auto max-w-3xl text-center text-lg sm:text-2xl text-gray-600 leading-relaxed">
         {t(
           'We empower people and communities through education, health and partnership, enabling them to shape their own future with dignity, confidence and opportunity'

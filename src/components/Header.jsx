@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo.jsx'
+import LangSwitch from './LangSwitch.jsx'
 import { navItems } from './navItems.js'
 import { useLang } from '../i18n/useLang.js'
 // Full-bleed hero — needs a larger, less-compressed render than the global default.
@@ -61,7 +62,7 @@ function Header() {
   }, [mountedIndices])
 
   return (
-    <header className="relative h-[42vh] sm:h-[calc(100vh-49px)] w-full overflow-hidden">
+    <header className="relative h-[42vh] sm:h-[calc(100vh-var(--nav-h))] w-full overflow-hidden">
       {heroImages.map((img, i) =>
         mountedIndices.has(i) ? (
           <img
@@ -84,11 +85,39 @@ function Header() {
 }
 
 export function Nav() {
-  const { lang, toggle, t } = useLang()
+  const { t } = useLang()
   const [hasInteracted, setHasInteracted] = useState(false)
+  const navRef = useRef(null)
+
+  // Publish the nav's real height as --nav-h, which the sub-tabs stick to and
+  // the hero sizes against. Measured rather than hard-coded because it changes
+  // with the breakpoint, once webfonts land, and between languages — Devanagari
+  // sits taller than Latin, so EN and NE are not the same height.
+  useLayoutEffect(() => {
+    const el = navRef.current
+    if (!el) return
+    // Round up: offsetHeight truncates, and a fractional shortfall lets a sliver
+    // of scrolling content bleed through between the nav and the sub-tabs.
+    const publish = () =>
+      document.documentElement.style.setProperty(
+        '--nav-h',
+        `${Math.ceil(el.getBoundingClientRect().height)}px`
+      )
+    publish()
+    const ro = new ResizeObserver(publish)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   return (
-    <nav className="sticky top-0 z-50 flex border-b border-gray-300 bg-white text-[11px] sm:text-base">
+    <nav
+      ref={navRef}
+      // transform-gpu promotes the bar to its own compositing layer. Without it
+      // Chrome repaints the sticky nav as it flips between static and stuck and
+      // can leave it half-drawn while scrolling down — it only looks right again
+      // after scrolling back up.
+      className="sticky top-0 z-50 flex transform-gpu border-b border-gray-300 bg-white text-[11px] sm:text-base"
+    >
       {navItems.map((item) => (
         <NavLink
           key={item.to}
@@ -106,14 +135,7 @@ export function Nav() {
           {t(item.label).toUpperCase()}
         </NavLink>
       ))}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={lang === 'en' ? 'नेपालीमा बदल्नुहोस्' : 'Switch to English'}
-        className="shrink-0 whitespace-nowrap px-3 py-2 sm:px-4 sm:py-3 font-bold tracking-wide text-gray-700 transition-colors duration-200 hover:bg-gray-100 active:scale-95"
-      >
-        {lang === 'en' ? 'नेपाली' : 'ENGLISH'}
-      </button>
+      <LangSwitch />
     </nav>
   )
 }

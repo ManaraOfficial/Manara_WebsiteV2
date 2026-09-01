@@ -144,22 +144,39 @@ function Team() {
   const { t } = useLang()
   const [active, setActive] = useState('project-team')
   const panel = panels[active]
+  const bandRef = useRef(null)
   const listRef = useRef(null)
 
   useLayoutEffect(() => {
-    if (!listRef.current) return
-    gsap.fromTo(
-      listRef.current.children,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1, clearProps: 'transform,opacity' }
-    )
+    // Same treatment as the Manara / Projects tab bands: the background colour
+    // eases via CSS (transition-colors) while the copy glides in from the right,
+    // so switching tabs feels directional.
+    if (bandRef.current) {
+      gsap.fromTo(
+        bandRef.current,
+        { x: 44, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+      )
+    }
+    if (listRef.current) {
+      gsap.fromTo(
+        listRef.current.children,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1, clearProps: 'transform,opacity' }
+      )
+    }
   }, [active])
 
   return (
-    <div className="pb-16 sm:pb-20">
+    <div>
       <SubTabs tabs={tabs} active={active} onChange={setActive} />
-      <div className={`px-6 py-6 sm:py-8 text-white ${panel.bg}`}>
-        <div className="mx-auto max-w-3xl space-y-1 text-sm sm:text-base leading-relaxed">
+      <div
+        className={`overflow-x-hidden px-6 py-8 sm:py-10 text-white transition-colors duration-500 ease-out ${panel.bg}`}
+      >
+        <div
+          ref={bandRef}
+          className="mx-auto max-w-3xl space-y-1 text-sm sm:text-base leading-relaxed"
+        >
           <p>{t(panel.text)}</p>
         </div>
       </div>
@@ -170,9 +187,17 @@ function Team() {
             return (
             <li
               key={member.name}
-              className="group flex flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 [transition:translate_.5s_ease-out,box-shadow_.5s_ease-out] will-change-transform hover:-translate-y-1.5 hover:shadow-lg"
-              style={{ borderTop: `3px solid ${accent}` }}
+              className="group relative flex flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 [transition:translate_.5s_ease-out,box-shadow_.5s_ease-out] will-change-transform hover:-translate-y-1.5 hover:shadow-lg"
             >
+              {/* Accent line strongest in the middle, fading out to nothing at
+                  both ends — colour-codes the card without a hard edge. */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-0.5"
+                style={{
+                  background: `linear-gradient(90deg, transparent 0%, ${accent} 30%, ${accent} 70%, transparent 100%)`,
+                }}
+              />
               <BlurImage
                 src={member.image}
                 alt={member.name}

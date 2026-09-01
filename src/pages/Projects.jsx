@@ -250,7 +250,7 @@ function FlagshipPrograms() {
   }, [])
 
   return (
-    <div ref={sectionRef} className="bg-white px-6 py-8 sm:py-10 text-gray-700">
+    <div ref={sectionRef} className="bg-white px-6 py-10 sm:py-14 text-gray-700">
       <div className="mx-auto max-w-3xl space-y-3">
         <h2 className="flagship-animate text-xl sm:text-2xl font-medium text-gray-800">
           {t('Flagship Programs')}
@@ -462,7 +462,7 @@ function Testimonials({ detail }) {
         </h2>
 
         <div
-          className="reveal mt-6 -my-4 overflow-hidden py-12"
+          className="reveal mt-4 -my-4 overflow-hidden py-12"
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
@@ -538,7 +538,7 @@ function OtherActivities({ withList }) {
   const { t } = useLang()
 
   return (
-    <div ref={ref} className="bg-white px-6 py-8 sm:py-10 text-gray-700">
+    <div ref={ref} className="bg-white px-6 py-10 sm:py-14 text-gray-700">
       <div className="mx-auto max-w-3xl space-y-3">
         <h2 className="reveal text-xl sm:text-2xl font-medium text-gray-800">
           {t('Other Activities')}
@@ -582,26 +582,32 @@ function Projects() {
   }, [active])
 
   useEffect(() => {
-    if (!active && picRowRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from(picRowRef.current.children, {
-          opacity: 0,
-          y: 30,
-          duration: 0.6,
-          ease: 'power2.out',
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: picRowRef.current,
-            start: 'top 90%',
-          },
-        })
+    // Wait for the lazily-loaded gallery: until the images resolve the Carousel
+    // renders null, so there are no children to animate — GSAP would warn and
+    // the entrance would never play. Re-running on otherImages.length means it
+    // fires once the photos actually arrive.
+    if (active || !picRowRef.current || !otherImages.length) return
+    const ctx = gsap.context(() => {
+      gsap.from(picRowRef.current.children, {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: 'power2.out',
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: picRowRef.current,
+          start: 'top 90%',
+        },
       })
-      return () => ctx.revert()
-    }
-  }, [active])
+      // The gallery adds ~600px of page height when it appears, which leaves
+      // every other ScrollTrigger's cached start position stale.
+      ScrollTrigger.refresh()
+    })
+    return () => ctx.revert()
+  }, [active, otherImages.length])
 
   return (
-    <div className="pb-16 sm:pb-20">
+    <div>
       <FlagshipPrograms />
       <SubTabs tabs={tabs} active={active} onChange={setActive} />
 

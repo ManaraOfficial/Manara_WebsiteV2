@@ -6,8 +6,8 @@ function Story() {
   const { t } = useLang()
 
   return (
-    <section ref={ref} className="bg-gray-700 px-6 py-10 sm:py-12 text-gray-100">
-      <h2 className="reveal text-center text-xl sm:text-2xl font-medium mb-6">
+    <section ref={ref} className="bg-gray-700 px-6 py-10 sm:py-14 text-gray-100">
+      <h2 className="reveal text-center text-xl sm:text-2xl font-medium mb-4">
         {t('The Story of Manara')}
       </h2>
       <div className="mx-auto max-w-3xl space-y-4 text-sm sm:text-base leading-relaxed text-gray-200">

@@ -85,7 +85,7 @@ const ne = {
   'Fill out the form below and your message will be emailed directly to our team.':
     'तलको फारम भर्नुहोस्, तपाईंको सन्देश सिधै हाम्रो टोलीलाई इमेल गरिनेछ।',
   'Full Name': 'पूरा नाम',
-  'Jane Doe': 'जेन डो',
+  'Ridam Gurung': 'रिदम गुरुङ',
   'Email Address': 'इमेल ठेगाना',
   'Phone Number': 'फोन नम्बर',
   '9841234567 or +977 9841234567': '९८४१२३४५६७ वा +९७७ ९८४१२३४५६७',

@@ -1,13 +1,19 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { FaCheck } from 'react-icons/fa'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 import { useLang } from '../i18n/useLang.js'
 
 const CONTACT_EMAIL = 'info@manara.org.np'
 
-// Web3Forms access key — get a free one at https://web3forms.com (safe to expose
-// in client code). Until it is set, the form runs in demo mode.
-const WEB3FORMS_KEY = 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY'
+// EmailJS credentials — see .env.example. The public key is meant to be visible
+// in client code; lock the form down by allow-listing your domain in the
+// EmailJS dashboard rather than by hiding this.
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+const isConfigured = Boolean(EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY)
 
 const details = [
   { label: 'Email', value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
@@ -18,9 +24,9 @@ const details = [
 ]
 
 const socials = [
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Twitter', href: '#' },
   { label: 'Facebook', href: '#' },
+  { label: 'Instagram', href: '#' },
+  { label: 'TikTok', href: '#' },
 ]
 
 const inquiryTopics = [
@@ -46,8 +52,6 @@ function Contact() {
   const { t } = useLang()
   const [status, setStatus] = useState('idle') // idle | sending | success | error
   const [errors, setErrors] = useState({})
-
-  const demoMode = WEB3FORMS_KEY === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY'
 
   const validateField = (name, rawValue) => {
     const value = String(rawValue || '').trim()
@@ -109,31 +113,42 @@ function Contact() {
     }
     setErrors({})
 
-    if (demoMode) {
-      setStatus('success')
-      e.target.reset()
+    // Never report success we can't back up: with no credentials the form fails
+    // loudly and points at the email address, rather than silently binning a
+    // real enquiry behind a green tick.
+    if (!isConfigured) {
+      setStatus('error')
       return
     }
+
     setStatus('sending')
-    data.append('access_key', WEB3FORMS_KEY)
-    data.append('subject', 'New message from the Manara Foundation website')
-    data.append('from_name', 'Manara Foundation website')
     try {
-      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data })
-      const json = await res.json()
-      setStatus(json.success ? 'success' : 'error')
-      if (json.success) e.target.reset()
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: data.get('name'),
+          phone: data.get('phone'),
+          address: data.get('address'),
+          topic: data.get('topic'),
+          message: data.get('message'),
+          to_email: CONTACT_EMAIL,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      )
+      setStatus('success')
+      e.target.reset()
     } catch {
       setStatus('error')
     }
   }
 
   return (
-    <div ref={ref} className="px-6 py-14 sm:py-20">
+    <div ref={ref} className="px-6 py-12 sm:py-16">
       <h1 className="reveal text-center text-2xl sm:text-3xl font-medium text-gray-800">
         {t('Contact')}
       </h1>
-      <p className="reveal mx-auto mt-4 max-w-2xl text-center text-sm sm:text-base leading-relaxed text-gray-600">
+      <p className="reveal mx-auto mt-4 max-w-3xl text-center text-sm sm:text-base leading-relaxed text-gray-600">
         {t(
           'Get in touch with the Manara Foundation — we welcome questions, partnership ideas and support from anyone who shares our vision.'
         )}
@@ -199,7 +214,7 @@ function Contact() {
                 <label className={labelClass}>{t('Full Name')} *</label>
                 <input
                   name="name"
-                  placeholder={t('Jane Doe')}
+                  placeholder={t('Ridam Gurung')}
                   className={inputClass('name')}
                   onChange={handleFieldChange}
                   onBlur={handleFieldChange}
@@ -258,7 +273,10 @@ function Contact() {
 
               {status === 'error' && (
                 <p className="text-sm text-red-600">
-                  {t('Something went wrong. Please try again or email us directly.')}
+                  {t('Something went wrong. Please try again or email us directly.')}{' '}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold underline">
+                    {CONTACT_EMAIL}
+                  </a>
                 </p>
               )}
 
