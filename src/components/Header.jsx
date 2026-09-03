@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import LangSwitch from './LangSwitch.jsx'
@@ -86,10 +86,36 @@ function Header() {
 
 export function Nav() {
   const { t } = useLang()
+  const navRef = useRef(null)
   const [hasInteracted, setHasInteracted] = useState(false)
 
+  // Publish the nav's real height as --nav-h so anything pinning beneath it (the
+  // sticky sub-tab bars) sits flush. A hardcoded offset silently rots whenever
+  // the nav's contents change size — this session's flag and chevron additions
+  // did exactly that, leaving a visible gap between the nav and the tab bar.
+  //
+  // getBoundingClientRect().height (sub-pixel, a float) rather than offsetHeight
+  // (rounds to a whole pixel) — on a display with OS scaling the rounding error
+  // alone can show up as a hairline gap or overlap.
+  useLayoutEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    const update = () =>
+      document.documentElement.style.setProperty(
+        '--nav-h',
+        `${nav.getBoundingClientRect().height}px`
+      )
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(nav)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <nav className="sticky top-0 z-50 flex border-b border-gray-300 bg-white text-[11px] sm:text-base">
+    <nav
+      ref={navRef}
+      className="sticky top-0 z-50 flex border-b border-gray-300 bg-white text-[11px] sm:text-base"
+    >
       {navItems.map((item) => (
         <NavLink
           key={item.to}

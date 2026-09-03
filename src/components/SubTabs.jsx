@@ -33,7 +33,14 @@ function SubTabs({ tabs, active, onChange }) {
   return (
     <>
       <div ref={anchorRef} aria-hidden="true" />
-      <div className="sticky top-[34px] sm:top-[49px] z-40 flex">
+      <div
+        // Pinned to the nav's real height, published by Nav as --nav-h
+        // (index.css holds a fallback for the very first paint, before the
+        // measurement lands). Hardcoding this offset is what caused the gap —
+        // it silently drifts out of sync whenever the nav's own height changes.
+        className="sticky z-40 flex"
+        style={{ top: 'var(--nav-h)' }}
+      >
         {tabs.map((tab) => {
           const isActive = tab.key === active
           return (

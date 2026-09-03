@@ -124,7 +124,14 @@ function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
       </div>
 
       {total > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-2">
+        // The row's own content — up to THUMBS_VISIBLE thumbnails plus a prev/next
+        // arrow on each end, none of it allowed to shrink — is wider than a phone
+        // screen. With nowhere to give, it was pushing the whole page wider,
+        // which is what let the site pinch-zoom out with dead space on the right.
+        // overflow-x-auto lets the row scroll within itself instead; the negative
+        // margin plus matching padding lets it use the full viewport width for
+        // that scroll while everything still lines up at rest.
+        <div className="-mx-6 flex items-center justify-center gap-2 overflow-x-auto px-6">
           {maxThumbStart > 0 && (
             <button
               type="button"

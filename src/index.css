@@ -214,3 +214,17 @@ label[for] {
     animation: none;
   }
 }
+
+/* Height of the sticky nav, consumed by the sticky sub-tab bars so they pin
+   flush beneath it. Only the default for the very first paint — Nav measures
+   itself and overwrites this on the root element, so the offset stays correct
+   as the nav's contents change size. */
+:root {
+  --nav-h: 34px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-h: 49px;
+  }
+}
