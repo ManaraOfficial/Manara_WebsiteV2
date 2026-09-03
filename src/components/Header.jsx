@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import LangSwitch from './LangSwitch.jsx'
 import { navItems } from './navItems.js'
@@ -86,7 +86,18 @@ function Header() {
 
 export function Nav() {
   const { t } = useLang()
+  const navigate = useNavigate()
   const [hasInteracted, setHasInteracted] = useState(false)
+
+  // Fire the navigation a second time shortly after the first. ScrollToTop is
+  // keyed on location.key, which changes on every navigation including a repeat
+  // of the same path, so this re-runs its scroll once the route's chunk has had
+  // time to land — the same reason clicking a nav item twice by hand works.
+  // `replace` keeps it out of the history stack so Back still takes one press.
+  const handleNavClick = (to) => {
+    setHasInteracted(true)
+    window.setTimeout(() => navigate(to, { replace: true }), 350)
+  }
 
   return (
     <nav className="sticky top-0 z-50 flex border-b border-gray-300 bg-white text-[11px] sm:text-base">
@@ -95,7 +106,7 @@ export function Nav() {
           key={item.to}
           to={item.to}
           end={item.end}
-          onClick={() => setHasInteracted(true)}
+          onClick={() => handleNavClick(item.to)}
           className={({ isActive }) =>
             `flex-1 whitespace-nowrap px-1 py-2 sm:px-3 sm:py-3 text-center tracking-wide border-r border-gray-300 last:border-r-0 transition-all duration-200 ease-out active:scale-95 ${
               isActive && hasInteracted

@@ -564,6 +564,7 @@ function Projects() {
   const { t } = useLang()
   const [active, setActive] = useState(tabs[0].key)
   const [expanded, setExpanded] = useState(false)
+  const wasExpanded = useRef(false)
   const detailRef = useRef(null)
   const picRowRef = useRef(null)
   const otherImages = useOtherImages(!active)
@@ -585,11 +586,16 @@ function Projects() {
   useEffect(() => {
     if (!active) return
     // Expanding adds several screens of content, which leaves every existing
-    // ScrollTrigger's cached start position stale. Collapsing removes it again,
-    // which can strand the reader below the end of the page — so pull them back
-    // up to the intro.
+    // ScrollTrigger's cached start position stale.
     ScrollTrigger.refresh()
-    if (!expanded && detailRef.current) {
+
+    // Pull the reader back up only when they actually collapse the section —
+    // removing that content can otherwise strand them past the end of the page.
+    // Crucially NOT on mount: arriving here from another route, this would race
+    // ScrollToTop's own scroll and leave the page stuck partway down.
+    const justCollapsed = wasExpanded.current && !expanded
+    wasExpanded.current = expanded
+    if (justCollapsed && detailRef.current) {
       const top = detailRef.current.getBoundingClientRect().top + window.scrollY
       if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' })
     }
