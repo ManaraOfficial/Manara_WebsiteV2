@@ -8,6 +8,9 @@ const ZOOM_MAX = 3
 const ZOOM_STEP = 0.5
 
 const THUMBS_VISIBLE = 6
+// How many of those thumbnails actually show below the sm breakpoint — enough
+// to fit a phone screen without the row needing to scroll.
+const MOBILE_THUMBS = 4
 
 function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
   const [active, setActive] = useState(0)
@@ -124,14 +127,14 @@ function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
       </div>
 
       {total > 1 && (
-        // The row's own content — up to THUMBS_VISIBLE thumbnails plus a prev/next
-        // arrow on each end, none of it allowed to shrink — is wider than a phone
-        // screen. With nowhere to give, it was pushing the whole page wider,
-        // which is what let the site pinch-zoom out with dead space on the right.
-        // overflow-x-auto lets the row scroll within itself instead; the negative
-        // margin plus matching padding lets it use the full viewport width for
-        // that scroll while everything still lines up at rest.
-        <div className="-mx-6 flex items-center justify-center gap-2 overflow-x-auto px-6">
+        // Up to THUMBS_VISIBLE (6) thumbnails at rest, plus a prev/next arrow on
+        // each end — comfortable on desktop, but too wide to ever fit a phone
+        // screen, which is what was forcing the whole page wider. Below the sm
+        // breakpoint only the first MOBILE_THUMBS (4) are shown — hidden via CSS
+        // rather than sliced out of the array, so the indices used for
+        // goTo/active stay correct — and the thumbnails themselves shrink a
+        // size, so the row fits comfortably without needing to scroll.
+        <div className="mt-6 flex items-center justify-center gap-2">
           {maxThumbStart > 0 && (
             <button
               type="button"
@@ -155,7 +158,9 @@ function Carousel({ images, alt, ringClass = 'ring-gray-800' }) {
                   onClick={() => goTo(index)}
                   aria-label={`Go to image ${index + 1}`}
                   aria-current={isActive ? 'true' : undefined}
-                  className={`h-14 w-14 shrink-0 overflow-hidden rounded-lg transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800 ${
+                  className={`h-11 w-11 shrink-0 overflow-hidden rounded-lg transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800 sm:h-14 sm:w-14 ${
+                    i >= MOBILE_THUMBS ? 'hidden sm:block' : ''
+                  } ${
                     isActive
                       ? `ring-2 ring-offset-2 ${ringClass}`
                       : 'opacity-60 hover:opacity-100 hover:scale-105'
