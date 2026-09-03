@@ -158,3 +158,59 @@ label[for] {
     animation: none;
   }
 }
+
+/* Flag in a steady wind blowing one way. Every value stays on the same side
+   of zero, so the flag never swings back through the pole — it just leans away
+   and flutters at varying strength, the way it does in a constant breeze.
+   Two elements at durations that don't divide evenly, so the combined loop
+   takes ~12s to repeat instead of looking mechanical. */
+@keyframes flag-sway {
+  0% {
+    transform: perspective(80px) rotateY(7deg);
+  }
+  35% {
+    transform: perspective(80px) rotateY(21deg);
+  }
+  65% {
+    transform: perspective(80px) rotateY(12deg);
+  }
+  100% {
+    transform: perspective(80px) rotateY(7deg);
+  }
+}
+
+@keyframes flag-ripple {
+  0% {
+    transform: skewY(0.5deg) scaleY(1);
+  }
+  25% {
+    transform: skewY(2.6deg) scaleY(0.96);
+  }
+  55% {
+    transform: skewY(1.2deg) scaleY(1.02);
+  }
+  80% {
+    transform: skewY(3deg) scaleY(0.97);
+  }
+  100% {
+    transform: skewY(0.5deg) scaleY(1);
+  }
+}
+
+.flag-wave {
+  display: inline-flex;
+  transform-origin: left center;
+  animation: flag-sway 2.9s ease-in-out infinite;
+}
+
+.flag-wave > svg {
+  transform-origin: left center;
+  animation: flag-ripple 1.7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flag-wave,
+  .flag-wave > svg {
+    animation: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { FaCheck } from 'react-icons/fa'
+import { FaCheck, FaChevronDown } from 'react-icons/fa'
 import { FlagGB, FlagNP } from './Flags.jsx'
 import { useLang } from '../i18n/useLang.js'
 
@@ -51,8 +51,17 @@ function LangSwitch() {
           open ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100'
         }`}
       >
-        <current.Flag />
+        <span className="flag-wave">
+          <current.Flag wave />
+        </span>
         {current.short}
+        <FaChevronDown
+          size={9}
+          aria-hidden="true"
+          className={`shrink-0 opacity-60 transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
+        />
       </button>
 
       {open && (
