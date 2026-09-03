@@ -567,7 +567,7 @@ function Projects() {
   const wasExpanded = useRef(false)
   const detailRef = useRef(null)
   const picRowRef = useRef(null)
-  const otherImages = useOtherImages(!active)
+  const otherImages = useOtherImages(true)
 
   useLayoutEffect(() => {
     if (!detailRef.current || !active) return
@@ -694,9 +694,17 @@ function Projects() {
                 ringClass={details[active].ring}
               />
               {details[active].testimonials && <Testimonials detail={details[active]} />}
-              <OtherActivities withList={false} />
             </>
           )}
+          {/* Both stay visible whether or not the section is expanded. */}
+          <OtherActivities withList={false} />
+          <div ref={picRowRef}>
+            <Carousel
+              images={otherImages}
+              alt={t('Other activities')}
+              ringClass="ring-gray-800"
+            />
+          </div>
         </>
       ) : (
         <>
