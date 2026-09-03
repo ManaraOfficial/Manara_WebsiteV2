@@ -259,6 +259,8 @@ const ne = {
     'स्वस्थ विद्यालय संवेदनशीलता, सचेतना र दिगो संरचना निर्माण',
   'Organization of ECD specific teacher education and provisioning of ECD materials':
     'ईसीडी–केन्द्रित शिक्षक शिक्षाको आयोजना र ईसीडी सामग्रीको व्यवस्था',
+  'Learn More': 'थप पढ्नुहोस्',
+  'Show Less': 'कम देखाउनुहोस्',
 }
 
 export default ne

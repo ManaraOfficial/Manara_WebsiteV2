@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft, FaChevronLeft, FaChevronRight, FaPause, FaPlay } from 'react-icons/fa'
+import { FaUserCircle, FaStar, FaCheckCircle, FaQuoteLeft, FaChevronLeft, FaChevronRight, FaChevronDown, FaPause, FaPlay } from 'react-icons/fa'
 import SubTabs from '../components/SubTabs.jsx'
 import Carousel from '../components/Carousel.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
@@ -562,7 +562,8 @@ function OtherActivities({ withList }) {
 
 function Projects() {
   const { t } = useLang()
-  const [active, setActive] = useState(null)
+  const [active, setActive] = useState(tabs[0].key)
+  const [expanded, setExpanded] = useState(false)
   const detailRef = useRef(null)
   const picRowRef = useRef(null)
   const otherImages = useOtherImages(!active)
@@ -580,6 +581,19 @@ function Projects() {
     }, detailRef)
     return () => ctx.revert()
   }, [active])
+
+  useEffect(() => {
+    if (!active) return
+    // Expanding adds several screens of content, which leaves every existing
+    // ScrollTrigger's cached start position stale. Collapsing removes it again,
+    // which can strand the reader below the end of the page — so pull them back
+    // up to the intro.
+    ScrollTrigger.refresh()
+    if (!expanded && detailRef.current) {
+      const top = detailRef.current.getBoundingClientRect().top + window.scrollY
+      if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' })
+    }
+  }, [expanded, active])
 
   useEffect(() => {
     // Wait for the lazily-loaded gallery: until the images resolve the Carousel
@@ -609,7 +623,14 @@ function Projects() {
   return (
     <div>
       <FlagshipPrograms />
-      <SubTabs tabs={tabs} active={active} onChange={setActive} />
+      <SubTabs
+        tabs={tabs}
+        active={active}
+        onChange={(key) => {
+          setActive(key)
+          setExpanded(false)
+        }}
+      />
 
       {active ? (
         <>
@@ -620,9 +641,28 @@ function Projects() {
             {details[active].tagline ? (
               <div className="detail-body mx-auto max-w-3xl space-y-4">
                 <p className="text-lg sm:text-xl font-semibold">{t(details[active].tagline)}</p>
-                <p className="text-sm sm:text-base leading-relaxed text-white/90">
+                <p
+                  id={`intro-${active}`}
+                  className={`text-sm sm:text-base leading-relaxed text-white/90 ${
+                    expanded ? "" : "line-clamp-6"
+                  }`}
+                >
                   {t(details[active].intro)}
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setExpanded((v) => !v)}
+                  aria-expanded={expanded}
+                  aria-controls={`intro-${active}`}
+                  className="mx-auto flex items-center gap-1.5 rounded-full border border-white/50 px-4 py-1.5 text-xs font-semibold text-white transition-colors duration-200 hover:bg-white/15"
+                >
+                  {expanded ? t("Show Less") : t("Learn More")}
+                  <FaChevronDown
+                    size={10}
+                    className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
+                </button>
               </div>
             ) : (
               <>
@@ -636,15 +676,21 @@ function Projects() {
               </>
             )}
           </div>
-          {details[active].phases && <ProjectPhases detail={details[active]} />}
-          {details[active].sections && <ProjectSections detail={details[active]} />}
-          <Carousel
-            images={details[active].images}
-            alt={details[active].short}
-            ringClass={details[active].ring}
-          />
-          {details[active].testimonials && <Testimonials detail={details[active]} />}
-          <OtherActivities withList={false} />
+          {/* Everything past the intro stays hidden until "Learn More" — the
+              page opens on a short summary rather than several screens of copy. */}
+          {expanded && (
+            <>
+              {details[active].phases && <ProjectPhases detail={details[active]} />}
+              {details[active].sections && <ProjectSections detail={details[active]} />}
+              <Carousel
+                images={details[active].images}
+                alt={details[active].short}
+                ringClass={details[active].ring}
+              />
+              {details[active].testimonials && <Testimonials detail={details[active]} />}
+              <OtherActivities withList={false} />
+            </>
+          )}
         </>
       ) : (
         <>
