@@ -97,7 +97,11 @@ export function Nav() {
           end={item.end}
           onClick={() => setHasInteracted(true)}
           className={({ isActive }) =>
-            `flex-1 whitespace-nowrap px-1 py-2 sm:px-3 sm:py-3 text-center tracking-wide border-r border-gray-300 last:border-r-0 transition-all duration-200 ease-out active:scale-95 ${
+            // min-w-0 + truncate, NOT whitespace-nowrap: a flex item defaults to
+            // min-width:auto and so refuses to shrink below its text. With the long
+            // Nepali labels that pushed the nav wider than a phone screen, making the
+            // whole page scroll sideways and pinch-zoom out.
+            `min-w-0 flex-1 truncate px-1 py-2 sm:px-3 sm:py-3 text-center tracking-wide border-r border-gray-300 last:border-r-0 transition-all duration-200 ease-out active:scale-95 ${
               isActive && hasInteracted
                 ? 'bg-[#404040] text-white font-extrabold'
                 : 'bg-white text-gray-700 font-medium hover:bg-gray-100'
