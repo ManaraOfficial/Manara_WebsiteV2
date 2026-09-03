@@ -49,7 +49,7 @@ const NP_OUTLINE = 'M -15,37.5735931288 h 60 L -15,0 v 80 h 60 L -15,20 z'
 export function FlagNP({ className = '', wave = false }) {
   return (
     <svg
-      viewBox="-17.582 -4.664 71.571 87.246"
+      viewBox="-17.582 -2.582 65.164 85.164"
       preserveAspectRatio="xMidYMid meet"
       aria-hidden="true"
       className={`${box} ${className}`}
@@ -86,7 +86,13 @@ export function FlagNP({ className = '', wave = false }) {
       )}
       <g filter={wave ? 'url(#np-flag-ripple)' : undefined}>
         {/* Blue border drawn first so the crimson field sits on top of it. */}
-        <path d={NP_OUTLINE} fill="none" stroke="#003893" strokeWidth="5.165" />
+        <path
+          d={NP_OUTLINE}
+          fill="none"
+          stroke="#003893"
+          strokeWidth="5.165"
+          strokeLinejoin="round"
+        />
         <path d={NP_OUTLINE} fill="#DC143C" />
         <g fill="#fff">
           {/* Crescent moon — the official two-arc path. */}

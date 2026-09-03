@@ -16,8 +16,22 @@ const options = [
 function LangSwitch() {
   const { lang, setLang } = useLang()
   const [open, setOpen] = useState(false)
+  const [dropUp, setDropUp] = useState(false)
   const wrapRef = useRef(null)
   const current = options.find((o) => o.code === lang) || options[0]
+
+  // On first load the nav sits at the very bottom of the viewport (the hero
+  // above it is a full screen tall), so a menu opening downwards would fall off
+  // the screen. Measure the room below at the moment of opening and flip the
+  // menu above the button when it will not fit.
+  const MENU_HEIGHT = 96
+  const toggle = () => {
+    if (!open && wrapRef.current) {
+      const { bottom } = wrapRef.current.getBoundingClientRect()
+      setDropUp(window.innerHeight - bottom < MENU_HEIGHT)
+    }
+    setOpen((o) => !o)
+  }
 
   // A menu that can only be dismissed by picking something is a trap — close on
   // outside click and on Escape.
@@ -43,7 +57,7 @@ function LangSwitch() {
     <div ref={wrapRef} className="relative shrink-0">
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggle}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Language / भाषा"
@@ -67,7 +81,9 @@ function LangSwitch() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 w-36 overflow-hidden rounded-b-lg border border-gray-200 bg-white shadow-lg"
+          className={`absolute right-0 z-50 w-36 overflow-hidden border border-gray-200 bg-white shadow-lg ${
+            dropUp ? 'bottom-full rounded-t-lg' : 'top-full rounded-b-lg'
+          }`}
         >
           {options.map((o) => {
             const active = lang === o.code
