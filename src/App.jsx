@@ -1,15 +1,14 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Outlet } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 
-// Each page (and its images) is its own chunk, so visiting /team never downloads
-// the Projects photos and vice-versa.
 const Manara = lazy(() => import('./pages/Manara.jsx'))
 const Team = lazy(() => import('./pages/Team.jsx'))
 const Projects = lazy(() => import('./pages/Projects.jsx'))
 const Reports = lazy(() => import('./pages/Reports.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
 function PageFallback() {
   return (
@@ -21,18 +20,28 @@ function PageFallback() {
 
 function App() {
   return (
-    <Layout>
-      <ScrollToTop />
-      <Suspense fallback={<PageFallback />}>
-        <Routes>
+    <Suspense fallback={<PageFallback />}>
+      <Routes>
+        {/* Main pages wrapped inside Layout (Navbar/Footer) */}
+        <Route
+          element={
+            <Layout>
+              <ScrollToTop />
+              <Outlet />
+            </Layout>
+          }
+        >
           <Route path="/" element={<Manara />} />
           <Route path="/team" element={<Team />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </Suspense>
-    </Layout>
+        </Route>
+
+        {/* Full-screen Standalone 404 (Outside Layout) */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   )
 }
 
