@@ -67,14 +67,14 @@ function Reports() {
   }
 
   return (
-    <div ref={ref} className="bg-slate-50 dark:bg-[#0a0a0a] px-4 py-8 sm:px-6 sm:py-12">
+    <div ref={ref} className="bg-white px-4 py-8 sm:px-6 sm:py-12">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="reveal text-center mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
             {t('Reports')}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-gray-400 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
             {t(
               'Annual and project reports from Manara Foundation will be published here, so that our supporters and partners can follow our progress and impact over time.'
             )}
@@ -92,26 +92,26 @@ function Reports() {
             {t('No reports available at the moment.')}
           </div>
         ) : (
-          <div className="divide-y divide-slate-200 dark:divide-slate-800/80 border-t border-b border-slate-200 dark:border-slate-800/80">
+          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
             {reports.map((report) => (
               <div
                 key={report._id}
-                className="reveal py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-100/50 dark:hover:bg-slate-900/40 rounded-lg transition-colors"
+                className="reveal py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 {/* Information */}
                 <div className="space-y-1 flex-1">
                   {report.publishedDate && (
-                    <span className="text-[11px] font-semibold text-[#2E6B3E] dark:text-emerald-400">
+                    <span className="text-[11px] font-semibold text-[#2E6B3E]">
                       {report.publishedDate}
                     </span>
                   )}
 
-                  <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white">
+                  <h2 className="text-sm sm:text-base font-semibold text-slate-900">
                     {report.title}
                   </h2>
 
                   {report.description && (
-                    <p className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed max-w-xl">
+                    <p className="text-xs text-slate-500 leading-relaxed max-w-xl">
                       {report.description}
                     </p>
                   )}
@@ -124,7 +124,7 @@ function Reports() {
                       href={report.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#2E6B3E] dark:text-emerald-400 hover:underline transition-all"
+                      className="text-[#2E6B3E] hover:underline transition-all"
                     >
                       {t('View PDF')}
                     </a>
