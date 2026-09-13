@@ -50,7 +50,7 @@ function Reports() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('opacity-100', 'translate-y-0')
-            entry.target.classList.remove('opacity-0', 'translate-y-4')
+            entry.target.classList.remove('opacity-0', 'translate-y-6')
             observer.unobserve(entry.target)
           }
         })
@@ -121,8 +121,8 @@ function Reports() {
             {reports.map((report, index) => (
               <div
                 key={report._id}
-                style={{ transitionDelay: `${index * 75}ms` }}
-                className="report-item opacity-0 translate-y-4 transition-all duration-500 ease-out py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 rounded-lg"
+                style={{ transitionDelay: `${index * 150}ms` }}
+                className="report-item opacity-0 translate-y-6 transition-all duration-1000 ease-out py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 rounded-lg"
               >
                 {/* Information */}
                 <div className="space-y-1 flex-1">
@@ -132,7 +132,7 @@ function Reports() {
                     </span>
                   )}
 
-                  <h2 className="text-sm sm:text-base font-semibold text-slate-900">
+                  <h2 className="text-sm sm:text-base font-[#1f2937] font-semibold text-slate-900">
                     {report.title}
                   </h2>
 
