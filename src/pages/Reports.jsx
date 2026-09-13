@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 import { useLang } from '../i18n/useLang.js'
 import { client } from '../sanity'
 
 function Reports() {
-  const ref = useScrollReveal('.reveal')
+  const containerRef = useRef(null)
+  const headerRef = useScrollReveal('.reveal')
   const { t } = useLang()
+
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
   const [downloadingId, setDownloadingId] = useState(null)
@@ -39,6 +41,29 @@ function Reports() {
     }
   }, [])
 
+  // Observe dynamic list items after they mount in the DOM
+  useEffect(() => {
+    if (loading || reports.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0')
+            entry.target.classList.remove('opacity-0', 'translate-y-4')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    const items = containerRef.current?.querySelectorAll('.report-item')
+    items?.forEach((item) => observer.observe(item))
+
+    return () => observer.disconnect()
+  }, [loading, reports])
+
   const handleDownload = async (e, fileUrl, title, id) => {
     e.preventDefault()
     if (!fileUrl) return
@@ -67,10 +92,10 @@ function Reports() {
   }
 
   return (
-    <div ref={ref} className="bg-white px-4 py-8 sm:px-6 sm:py-12">
+    <div className="bg-white px-4 py-8 sm:px-6 sm:py-12">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="reveal text-center mb-8">
+        <div ref={headerRef} className="reveal text-center mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
             {t('Reports')}
           </h1>
@@ -92,11 +117,12 @@ function Reports() {
             {t('No reports available at the moment.')}
           </div>
         ) : (
-          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
-            {reports.map((report) => (
+          <div ref={containerRef} className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            {reports.map((report, index) => (
               <div
                 key={report._id}
-                className="reveal py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 rounded-lg transition-colors"
+                style={{ transitionDelay: `${index * 75}ms` }}
+                className="report-item opacity-0 translate-y-4 transition-all duration-500 ease-out py-4 px-2 sm:px-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 rounded-lg"
               >
                 {/* Information */}
                 <div className="space-y-1 flex-1">
@@ -117,7 +143,7 @@ function Reports() {
                   )}
                 </div>
 
-                {/* Minimalist Text Links */}
+                {/* Actions */}
                 {report.fileUrl && (
                   <div className="flex items-center gap-4 shrink-0 text-xs font-semibold pt-1 sm:pt-0">
                     <a
