@@ -57,7 +57,7 @@ function Header() {
         const next = (i + 1) % heroImages.length
         return mountedIndices.has(next) ? next : i
       })
-    }, 7000)
+    }, 9000)
     return () => clearInterval(timer)
   }, [mountedIndices])
 

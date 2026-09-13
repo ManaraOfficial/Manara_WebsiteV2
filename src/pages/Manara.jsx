@@ -42,7 +42,7 @@ function Manara() {
     gsap.fromTo(
       panelRef.current,
       { x: 44, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+      { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }
     )
   }, [active])
 

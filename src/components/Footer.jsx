@@ -6,9 +6,9 @@ import { useLang } from '../i18n/useLang.js'
 const CONTACT_EMAIL = 'info@manara.org.np'
 
 const socials = [
-  { icon: FaFacebookF, href: '#', label: 'Facebook' },
-  { icon: FaInstagram, href: '#', label: 'Instagram' },
-  { icon: FaTiktok, href: '#', label: 'TikTok' },
+  { icon: FaFacebookF, href: 'https://www.facebook.com/MenschenDialog',target: '_blank', label: 'Facebook' },
+  { icon: FaInstagram, href: 'https://www.instagram.com/menschen.im.dialog/', target: '_blank', label: 'Instagram' },
+  { icon: FaTiktok, href: 'https://www.tiktok.com/en/', target: '_blank', label: 'TikTok' },
 ]
 
 function Footer() {
@@ -36,6 +36,7 @@ function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
+                  target="_blank"
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-500 transition-colors hover:bg-[#EC8134] hover:text-white"
                 >
                   <Icon size={13} />
