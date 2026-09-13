@@ -128,9 +128,9 @@ function Contact() {
         EMAILJS_TEMPLATE_ID,
         {
           from_name: data.get('name'),
-          phone: data.get('phone'),
-          address: data.get('address'),
-          topic: data.get('topic'),
+          phone_number: data.get('phone'),
+          user_address: data.get('address'),
+          subject: data.get('topic'),
           message: data.get('message'),
           to_email: CONTACT_EMAIL,
         },
@@ -214,7 +214,7 @@ function Contact() {
                 <label className={labelClass}>{t('Full Name')} *</label>
                 <input
                   name="name"
-                  placeholder={t('Ridam Gurung')}
+                  placeholder={t('john doe')}
                   className={inputClass('name')}
                   onChange={handleFieldChange}
                   onBlur={handleFieldChange}
