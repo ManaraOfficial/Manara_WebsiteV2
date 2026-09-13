@@ -4,9 +4,8 @@ import { FaPhoneAlt, FaWhatsapp } from 'react-icons/fa'
 import SubTabs from '../components/SubTabs.jsx'
 import BlurImage from '../components/BlurImage.jsx'
 import { useLang } from '../i18n/useLang.js'
-import ralfImg from '../assets/ralf.jpg'
-import jurgenImg from '../assets/jurgen.jpeg'
-import andreaImg from '../assets/andrea.jpeg'
+import ralfImg from '../assets/rupesh.webp'
+import jurgenImg from '../assets/chering.jpg'
 import ridamImg from '../assets/ridam.jpeg'
 import anjuImg from '../assets/anju.png'
 import rajeshImg from '../assets/rajesh.jpg'
@@ -104,37 +103,26 @@ const panels = {
     text: 'Our board members guide the strategic direction of Manara Foundation, bringing years of experience in humanitarian and community development work to oversee our mission.',
     members: [
       {
-        name: 'Ralf Ledl',
+        name: 'Rupesh Ghale',
         image: ralfImg,
-        category: 'Curious Minds',
-        role: 'Head of Curious Minds',
+        category: 'Board Chair',
+        role: 'Managing Director',
         credential: 'Board Chair',
-        project: 'curious-minds',
-        phone: '+49 162 5925249',
-        bio: "Chairs the board and leads Curious Minds, guiding the growth of digital learning and children's rights work across Nepal.",
+        project: 'Board Chair',
+        phone: '+977 984123456',
+        bio: "Supports Manara’s programs and contributes to the organization’s growth and community impact.",
         stats: { projects: '45+', experience: '14 Yrs' },
       },
       {
-        name: 'Jürgen Luck',
+        name: 'Chhring Gurung',
         image: jurgenImg,
-        category: 'CECS',
-        role: 'Head of CECS',
+        category: 'Board Treasurer',
+        role: 'Managing Director',
         credential: 'Board Treasurer',
-        project: 'cecs',
-        phone: '+43 676 4779369',
-        bio: 'Board treasurer and lead of CECS, overseeing child sponsorships and the long-term financial stewardship of the Foundation.',
+        project: 'Board Treasurer',
+        phone: '+977 9801234567',
+        bio: 'Provides leadership and guidance to support Manara’s mission and community development work.',
         stats: { projects: '30+', experience: '9 Yrs' },
-      },
-      {
-        name: 'Andrea Spieth',
-        image: andreaImg,
-        category: 'Project 28',
-        role: 'Head of Project 28',
-        credential: 'Board Member',
-        project: 'project-28',
-        phone: '+43 699 17118965',
-        bio: 'Initiator and lead of Project 28, bringing organisational development expertise to advance menstrual dignity and health in Nepal.',
-        stats: { projects: '28+', experience: '8 Yrs' },
       },
     ],
   },

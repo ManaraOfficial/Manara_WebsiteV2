@@ -10,10 +10,17 @@ const Reports = lazy(() => import('./pages/Reports.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
+// Fullscreen, perfectly centered loader using the Green, Orange, and Red theme
 function PageFallback() {
   return (
-    <div className="flex min-h-[40vh] items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-[#1E5AA8]" />
+    <div className="flex min-h-screen w-full items-center justify-center bg-slate-50">
+      <div className="relative flex items-center justify-center">
+        {/* Pulsing background aura */}
+        <div className="absolute h-16 w-16 animate-ping rounded-full bg-[#2E6B3E]/10" />
+
+        {/* Multi-color spinning loader ring */}
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-[#2E6B3E] border-r-[#F28526] border-b-[#D9381E]" />
+      </div>
     </div>
   )
 }

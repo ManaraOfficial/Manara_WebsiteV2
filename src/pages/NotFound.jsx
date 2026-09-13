@@ -81,13 +81,17 @@ export default function NotFound() {
           Looks like you've wandered off the path. The page you are looking for has been moved or doesn't exist.
         </p>
 
-        {/* Return Home Button */}
+        {/* Animated Moving Border Button */}
         <div className="mt-8 z-30">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#2E6B3E] via-[#F28526] to-[#D9381E] p-[2px] shadow-lg shadow-orange-500/10 transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl p-[2px] shadow-lg shadow-orange-500/10 transition-transform duration-200 hover:scale-105 active:scale-95"
           >
-            <span className="flex items-center gap-2 rounded-[10px] bg-white px-7 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50 sm:text-base">
+            {/* Rotating Conic Gradient (Creates the moving border effect) */}
+            <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg_at_50%_50%,#2E6B3E_0%,#F28526_33%,#D9381E_66%,#2E6B3E_100%)]" />
+
+            {/* Button Inner Body */}
+            <span className="relative z-10 flex items-center gap-2 rounded-[10px] bg-white px-7 py-3 text-sm font-bold text-slate-800 transition-colors group-hover:bg-slate-50 sm:text-base">
               <svg
                 className="h-5 w-5 text-[#2E6B3E]"
                 fill="none"
