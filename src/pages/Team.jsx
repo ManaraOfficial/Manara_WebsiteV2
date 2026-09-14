@@ -143,14 +143,14 @@ function Team() {
       gsap.fromTo(
         bandRef.current,
         { x: 44, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }
+        { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
       )
     }
     if (listRef.current) {
       gsap.fromTo(
         listRef.current.children,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out', stagger: 0.1, clearProps: 'transform,opacity' }
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1, clearProps: 'transform,opacity' }
       )
     }
   }, [active])
