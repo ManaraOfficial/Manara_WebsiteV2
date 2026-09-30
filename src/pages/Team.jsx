@@ -64,16 +64,6 @@ const panels = {
         bio: 'Coordinates Curious Minds, setting up digital classrooms and training teachers in remote schools of the Manaslu region.',
         stats: { projects: '35+', experience: '6 Yrs' },
       },
-      {
-        name: 'Neha Adhikari',
-        image: nehaImg,
-        category: 'Project 28',
-        role: 'Project 28 Coordinator',
-        project: 'project-28',
-        phone: '+977 986-0102468',
-        bio: 'Works with schools and communities on Project 28, running menstrual health workshops and helping girls stay in school throughout their cycle.',
-        stats: { projects: '15+', experience: '3 Yrs' },
-      },
     ],
   },
   administration: {
